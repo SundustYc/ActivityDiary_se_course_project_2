@@ -42,7 +42,7 @@
 # Don't warn about removed methods from AppCompat
 -keep android.support.v4.app.NotificationCompat*
 
--keep public class android.support.v7.widget.GridLayoutManager {
+-keep public class androidx.recyclerview.widget.GridLayoutManager {
     public protected *;
 }
 
