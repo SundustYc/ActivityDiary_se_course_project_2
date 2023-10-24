@@ -142,7 +142,8 @@ dependencies {
     implementation 'org.osmdroid:osmdroid-android:6.1.11'
     implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
     // Don't forget to add attribution in strings.xml/libraries and README.md if you add something here
-
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    androidTestImplementation 'androidx.test.ext:core:1.0.0'
     androidTestImplementation 'junit:junit:4.12'
     androidTestImplementation('androidx.test.espresso:espresso-core:3.1.0', {
         exclude group: 'com.android.support', module: 'support-annotations'
