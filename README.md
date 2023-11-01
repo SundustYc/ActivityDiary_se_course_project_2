@@ -1,0 +1,1 @@
+# ActivityDiary of SE class
