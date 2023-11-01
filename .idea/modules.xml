@@ -7,6 +7,11 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/ActivityDiary.app.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/ActivityDiary.app.androidTest.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/ActivityDiary.app.main.iml" filepath="$PROJECT_DIR$/.idea/modules/app/ActivityDiary.app.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/ActivityDiary.app.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/ActivityDiary.app.unitTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/ActivityDiary_se_course_project_2.iml" filepath="$PROJECT_DIR$/.idea/modules/ActivityDiary_se_course_project_2.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/ActivityDiary_se_course_project_2.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/ActivityDiary_se_course_project_2.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/ActivityDiary_se_course_project_2.app.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/ActivityDiary_se_course_project_2.app.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/ActivityDiary_se_course_project_2.app.main.iml" filepath="$PROJECT_DIR$/.idea/modules/app/ActivityDiary_se_course_project_2.app.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/ActivityDiary_se_course_project_2.app.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/ActivityDiary_se_course_project_2.app.unitTest.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/AndroidStudioProjects.ActivityDiary.iml" filepath="$PROJECT_DIR$/.idea/modules/AndroidStudioProjects.ActivityDiary.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/AndroidStudioProjects.ActivityDiary.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/AndroidStudioProjects.ActivityDiary.app.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/AndroidStudioProjects.ActivityDiary.app.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/AndroidStudioProjects.ActivityDiary.app.androidTest.iml" />

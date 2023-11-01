@@ -2,6 +2,7 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel target="11">
+      <module name="ActivityDiary_se_course_project_2.app" target="17" />
       <module name="AndroidStudioProjects.ActivityDiary.app" target="17" />
     </bytecodeTargetLevel>
   </component>
