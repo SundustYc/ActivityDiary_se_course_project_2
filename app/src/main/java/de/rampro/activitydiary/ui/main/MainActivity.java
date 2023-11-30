@@ -444,7 +444,6 @@ public class MainActivity extends BaseActivity implements
                             Integer.toString(newAct.getId())
                     },
                     null);
-
             queryAllTotals();
         }
 
@@ -630,12 +629,18 @@ public class MainActivity extends BaseActivity implements
         return false;
     }
 
+    /**
+     * 当查询文本更改时调用
+     */
     @Override
     public boolean onQueryTextChange(String newText) {
         filterActivityView(newText);
-        return true; //直接搜索
+        return true;
     }
 
+    /**
+     *当用户点击对话框的取消按钮时调用
+     */
     @Override
     public void onNoteEditPositiveClock(String str, DialogFragment dialog) {
         ContentValues values = new ContentValues();
@@ -651,11 +656,11 @@ public class MainActivity extends BaseActivity implements
         ActivityHelper.helper.setCurrentNote(str);
     }
 
+    /**
+     *当活动返回结果时调用
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        /**
-         * 当从相机应用程序返回时调用
-         */
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             if (mCurrentPhotoPath != null && viewModel.getCurrentDiaryUri() != null) {
@@ -816,7 +821,9 @@ public class MainActivity extends BaseActivity implements
     }
 }
 
-
+/**
+ * 活动的统计
+ */
 class StatParam {
     public int field;
     public long end;
