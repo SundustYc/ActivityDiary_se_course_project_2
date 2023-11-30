@@ -1,26 +1,9 @@
-/*
- * ActivityDiary
- *
- * Copyright (C) 2017-2018 Raphael Mack http://www.raphael-mack.de
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
- */
 package de.rampro.activitydiary.ui.main;
 
 import android.Manifest;
 import android.app.SearchManager;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import android.content.AsyncQueryHandler;
 import android.content.ContentResolver;
@@ -74,6 +57,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 import de.rampro.activitydiary.ActivityDiaryApplication;
 import de.rampro.activitydiary.BuildConfig;
@@ -91,99 +75,121 @@ import de.rampro.activitydiary.ui.history.HistoryDetailActivity;
 import de.rampro.activitydiary.ui.settings.SettingsActivity;
 
 /*
- * MainActivity to show most of the UI, based on switching the fragements
- *
- * */
+MainActivity 根据fragments的切换显示大部分用户界面
+*/
 public class MainActivity extends BaseActivity implements
         SelectRecyclerViewAdapter.SelectListener,
         ActivityHelper.DataChangedListener,
         NoteEditDialog.NoteEditDialogListener,
         View.OnLongClickListener,
         SearchView.OnQueryTextListener,
-        SearchView.OnCloseListener {
+        SearchView.OnCloseListener
+{
     private static final String TAG = MainActivity.class.getSimpleName();
-    private static final int REQUEST_IMAGE_CAPTURE = 1;
-    private static final int PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 4711;
+    //在日志输出或调试信息中标识出相关类的名称
+
+    private static final int REQUEST_IMAGE_CAPTURE = 1; //图片请求
+
+    private static final int PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 4711;//存储权限
 
     private static final int QUERY_CURRENT_ACTIVITY_STATS = 1;
     private static final int QUERY_CURRENT_ACTIVITY_TOTAL = 2;
+    //活动的统计
+    private DetailViewModel viewModel;//详细信息的视图模型
+    private String mCurrentPhotoPath;//当前图片的路径
+    private RecyclerView selectRecyclerView;//选择的视图
+    private StaggeredGridLayoutManager selectorLayoutManager;//选择的布局管理器
+    private SelectRecyclerViewAdapter selectAdapter;//选择的适配器
+    private String filter = "";//过滤器
+    private int searchRowCount, normalRowCount;//搜索的行数和正常的行数
+    private FloatingActionButton fabNoteEdit;//编辑的按钮
 
-    private DetailViewModel viewModel;
-
-    private String mCurrentPhotoPath;
-
-    private RecyclerView selectRecyclerView;
-    private StaggeredGridLayoutManager selectorLayoutManager;
-    private SelectRecyclerViewAdapter selectAdapter;
-
-    private String filter = "";
-    private int searchRowCount, normalRowCount;
-    private FloatingActionButton fabNoteEdit;
-    private FloatingActionButton fabAttachPicture;
-    private SearchView searchView;
-    private MenuItem searchMenuItem;
-    private ViewPager viewPager;
-    private TabLayout tabLayout;
-    private View headerView;
+    private FloatingActionButton fabAttachPicture;//附加图片的按钮
+    private SearchView searchView;//搜索的视图
+    private MenuItem searchMenuItem;//搜索的菜单项
+    private ViewPager viewPager;//视图的翻页
+    private TabLayout tabLayout;//标签的布局
+    private View headerView;//头部的视图
 
     private void setSearchMode(boolean searchMode){
         if(searchMode){
             headerView.setVisibility(View.GONE);
+            //隐藏头部的视图
             fabNoteEdit.hide();
+            //隐藏编辑的按钮
             fabAttachPicture.hide();
+            //隐藏附加图片的按钮
             getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-            ((StaggeredGridLayoutManager)selectRecyclerView.getLayoutManager()).setSpanCount(searchRowCount);
-
+            //设置软键盘的模式
+            ((StaggeredGridLayoutManager) Objects.requireNonNull(selectRecyclerView.getLayoutManager())).setSpanCount(searchRowCount);
+            //设置布局管理器的每行的列数
         }else{
-            ((StaggeredGridLayoutManager)selectRecyclerView.getLayoutManager()).setSpanCount(normalRowCount);
-
+            ((StaggeredGridLayoutManager) Objects.requireNonNull(selectRecyclerView.getLayoutManager())).setSpanCount(normalRowCount);
+            //设置布局管理器的每行的列数
             getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+            //设置软键盘的模式
             headerView.setVisibility(View.VISIBLE);
+            //显示头部的视图
             fabNoteEdit.show();
+            //显示编辑的按钮
             fabAttachPicture.show();
+            //显示附加图片的按钮
         }
 
     }
+    //设置搜索时某些组件的显示与隐藏
 
-    private MainAsyncQueryHandler mQHandler = new MainAsyncQueryHandler(ActivityDiaryApplication.getAppContext().getContentResolver());
+    private MainAsyncQueryHandler mQHandler =
+            new MainAsyncQueryHandler(ActivityDiaryApplication.getAppContext().getContentResolver());
+    //异步查询处理程序
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         outState.putString("currentPhotoPath", mCurrentPhotoPath);
-
-        // call superclass to save any view hierarchy
+        // 保存当前图片的路径
         super.onSaveInstanceState(outState);
+        // 调用超类来保存任何视图层次结构/实例状态
     }
 
-    @Override
+    @Override //在活动创建时调用
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        viewModel = ViewModelProviders.of(this).get(DetailViewModel.class);
-
-        // recovering the instance state
+        viewModel = new ViewModelProvider(this).get(DetailViewModel.class);
+        /*
+        原(已弃用)：viewModel = ViewModelProviders.of(this).get(DetailViewModel.class);
+        设置内容视图
+        使用 ViewModelProvider 创建并获取 DetailViewModel 的实例
+        ViewModel 用于存储与 UI 相关的数据，以便在配置更改（如屏幕旋转）时保持数据的一致性。
+        */
         if (savedInstanceState != null) {
             mCurrentPhotoPath = savedInstanceState.getString("currentPhotoPath");
+            // 从保存的实例状态恢复当前图片的路径
         }
 
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
+        //获取布局填充器，用于将 XML 布局文件转换为 View 对象。
         View contentView = inflater.inflate(R.layout.activity_main_content, null, false);
-
+        //使用布局填充器将 R.layout.activity_main_content 转换为 View 对象。这是设置活动内容视图的一部分
         setContent(contentView);
+        //设置活动的内容视图为 contentView
 
         headerView = findViewById(R.id.header_area);
         tabLayout = findViewById(R.id.tablayout);
-
         viewPager = findViewById(R.id.viewpager);
-        setupViewPager(viewPager);
-        tabLayout.setupWithViewPager(viewPager);
-
         selectRecyclerView = findViewById(R.id.select_recycler);
-
         View selector = findViewById(R.id.activity_background);
+        //通过查找 XML 布局文件中定义的视图 ID 获取对应的视图对象。
+
+        setupViewPager(viewPager);
+        //设置视图翻页   详见setupViewPager方法
+        tabLayout.setupWithViewPager(viewPager);
+        //设置标签布局与视图翻页的关联
+
         selector.setOnLongClickListener(this);
+        //设置长按事件的监听器
         selector.setOnClickListener(v -> {
+            // 设置点击事件的监听器，其中包含了一些逻辑处理。
             // TODO: get rid of this setting?
             if(PreferenceManager
                     .getDefaultSharedPreferences(ActivityDiaryApplication.getAppContext())
@@ -191,8 +197,8 @@ public class MainActivity extends BaseActivity implements
                 ActivityHelper.helper.setCurrentActivity(null);
             }else{
                 Intent i = new Intent(MainActivity.this, HistoryDetailActivity.class);
-                // no diaryEntryID will edit the last one
                 startActivity(i);
+                // 没有日记条目 ID 将编辑最后一个条目
             }
         });
 
@@ -211,11 +217,11 @@ public class MainActivity extends BaseActivity implements
 
         likelyhoodSort();
 
-        fabNoteEdit = (FloatingActionButton) findViewById(R.id.fab_edit_note);
-        fabAttachPicture = (FloatingActionButton) findViewById(R.id.fab_attach_picture);
+        fabNoteEdit = findViewById(R.id.fab_edit_note);
+        fabAttachPicture = findViewById(R.id.fab_attach_picture);
 
         fabNoteEdit.setOnClickListener(v -> {
-            // Handle the click on the FAB
+            // 处理 FAB 上的点击
             if(viewModel.currentActivity().getValue() != null) {
                 NoteEditDialog dialog = new NoteEditDialog();
                 dialog.setText(viewModel.mNote.getValue());
@@ -226,7 +232,7 @@ public class MainActivity extends BaseActivity implements
         });
 
         fabAttachPicture.setOnClickListener(v -> {
-            // Handle the click on the FAB
+            // 处理 FAB 上的点击
             if(viewModel.currentActivity() != null) {
                 Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
@@ -237,14 +243,13 @@ public class MainActivity extends BaseActivity implements
                         Log.i(TAG, "create file for image capture " + (photoFile == null ? "" : photoFile.getAbsolutePath()));
 
                     } catch (IOException ex) {
-                        // Error occurred while creating the File
+                        // 创建文件时发生错误
                         Toast.makeText(MainActivity.this, getResources().getString(R.string.camera_error), Toast.LENGTH_LONG).show();
                     }
-                    // Continue only if the File was successfully created
-                    if (photoFile != null) {
-                        // Save a file: path for use with ACTION_VIEW intents
-                        mCurrentPhotoPath = photoFile.getAbsolutePath();
 
+                    if (photoFile != null) {
+                        // 仅当文件已成功创建时才继续保存文件,与 ACTION_VIEW 目标一起使用的路径
+                        mCurrentPhotoPath = photoFile.getAbsolutePath();
                         Uri photoURI = FileProvider.getUriForFile(MainActivity.this,
                                 BuildConfig.APPLICATION_ID + ".fileprovider",
                                 photoFile);
@@ -252,7 +257,6 @@ public class MainActivity extends BaseActivity implements
                         takePictureIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
                         startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
                     }
-
                 }
             }else{
                 Toast.makeText(MainActivity.this, getResources().getString(R.string.no_active_activity_error), Toast.LENGTH_LONG).show();
@@ -267,6 +271,7 @@ public class MainActivity extends BaseActivity implements
         }else{
             fabAttachPicture.hide();
         }
+        //UI 控件的初始化和设置
 
         // Get the intent, verify the action and get the search query
         Intent intent = getIntent();
@@ -274,8 +279,8 @@ public class MainActivity extends BaseActivity implements
             String query = intent.getStringExtra(SearchManager.QUERY);
             filterActivityView(query);
         }
-// TODO: this is crazy to call onActivityChagned here, as it reloads the statistics and refills the viewModel... Completely against the idea of the viewmodel :-(
-        onActivityChanged(); /* do this at the very end to ensure that no Loader finishes its data loading before */
+        // 在这里调用onActivityChagned会重新加载统计数据并重新填充视图模型,完全违背了视图模型的理念
+        onActivityChanged(); /* 在最后执行此操作，以确保没有加载器在完成数据加载之前 */
     }
 
     private File createImageFile() throws IOException {
@@ -309,11 +314,12 @@ public class MainActivity extends BaseActivity implements
         if(storageDir != null){
             File image = new File(storageDir, imageFileName + ".jpg");
             image.createNewFile();
-/* #80            File image = File.createTempFile(
+            /*
+            #80
+            File image = File.createTempFile(
                     imageFileName,
                     ".jpg",
-                    storageDir
-            );
+                    storageDir);
             */
             return image;
         }else{
@@ -326,17 +332,16 @@ public class MainActivity extends BaseActivity implements
     public void onResume() {
         mNavigationView.getMenu().findItem(R.id.nav_main).setChecked(true);
         ActivityHelper.helper.registerDataChangeListener(this);
-        onActivityChanged(); /* refresh the current activity data */
+        onActivityChanged(); //刷新当前活动数据
         super.onResume();
 
         selectAdapter.notifyDataSetChanged(); // redraw the complete recyclerview
-        ActivityHelper.helper.evaluateAllConditions(); // this is quite heavy and I am not so sure whether it is a good idea to do it unconditionally here...
+        ActivityHelper.helper.evaluateAllConditions(); // 这相当沉重，我不确定在这里无条件地这样做是否合适
     }
 
     @Override
     public void onPause() {
         ActivityHelper.helper.unregisterDataChangeListener(this);
-
         super.onPause();
     }
 
@@ -495,9 +500,9 @@ public class MainActivity extends BaseActivity implements
         }
     }
 
-    /**
-     * Called when the data has changed.
-     */
+    /*
+    Called when the data has changed.
+    */
     @Override
     public void onActivityDataChanged() {
         selectAdapter.notifyDataSetChanged();
@@ -508,21 +513,19 @@ public class MainActivity extends BaseActivity implements
         selectAdapter.notifyItemChanged(selectAdapter.positionOf(activity));
     }
 
-    /**
-     * Called on addition of an activity.
-     *
-     * @param activity
-     */
+    /*
+    Called on addition of an activity.
+    @param activity
+    */
     @Override
     public void onActivityAdded(DiaryActivity activity) {
         /* no need to add it, as due to the reevaluation of the conditions the order change will happen */
     }
 
-    /**
-     * Called on removale of an activity.
-     *
-     * @param activity
-     */
+    /*
+    Called on removable of an activity.
+    @param activity
+    */
     @Override
     public void onActivityRemoved(DiaryActivity activity) {
         selectAdapter.notifyDataSetChanged();
@@ -532,12 +535,11 @@ public class MainActivity extends BaseActivity implements
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main_menu, menu);
-
-        // Get the SearchView and set the searchable configuration
+        // 获取SearchView并设置可搜索的配置
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         searchMenuItem = menu.findItem(R.id.action_filter);
         searchView = (SearchView) searchMenuItem.getActionView();
-        // Assumes current activity is the searchable activity
+        // 假设当前活动为可搜索活动，设置该SearchView显示搜索按钮
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
 
         searchView.setOnCloseListener(this);
@@ -562,6 +564,7 @@ public class MainActivity extends BaseActivity implements
     }
 
     protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
             filterActivityView(query);
@@ -627,8 +630,9 @@ public class MainActivity extends BaseActivity implements
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            if(mCurrentPhotoPath != null && viewModel.getCurrentDiaryUri() != null) {
+            if (mCurrentPhotoPath != null && viewModel.getCurrentDiaryUri() != null) {
                 Uri photoURI = FileProvider.getUriForFile(MainActivity.this,
                         BuildConfig.APPLICATION_ID + ".fileprovider",
                         new File(mCurrentPhotoPath));
@@ -641,7 +645,7 @@ public class MainActivity extends BaseActivity implements
                         ActivityDiaryContract.DiaryImage.CONTENT_URI,
                         values);
 
-                if(PreferenceManager
+                if (PreferenceManager
                         .getDefaultSharedPreferences(ActivityDiaryApplication.getAppContext())
                         .getBoolean(SettingsActivity.KEY_PREF_TAG_IMAGES, true)) {
                     try {
@@ -714,27 +718,34 @@ public class MainActivity extends BaseActivity implements
         }
 
         @Override
-        protected void onQueryComplete(int token, Object cookie, Cursor cursor) {
+        protected void onQueryComplete(int token, Object cookie, Cursor cursor)
+        {
             super.onQueryComplete(token, cookie, cursor);
-            if ((cursor != null) && cursor.moveToFirst()) {
+            if ((cursor != null) && cursor.moveToFirst())
+            {
                 if (token == QUERY_CURRENT_ACTIVITY_STATS) {
-                    long avg = cursor.getLong(cursor.getColumnIndex(ActivityDiaryContract.DiaryActivity.X_AVG_DURATION));
+                    int xAvgDuration = cursor.getColumnIndex(ActivityDiaryContract.DiaryActivity.X_AVG_DURATION);
+                    if(xAvgDuration >= 0)
+                    {
+                        long avg = cursor.getLong(xAvgDuration);
+                    }
                     viewModel.mAvgDuration.setValue(getResources().
-                            getString(R.string.avg_duration_description, TimeSpanFormatter.format(avg)));
-
+                            getString(R.string.avg_duration_description, TimeSpanFormatter.format(0)));
+                    }
                     SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(ActivityDiaryApplication.getAppContext());
                     String formatString = sharedPref.getString(SettingsActivity.KEY_PREF_DATETIME_FORMAT,
                             getResources().getString(R.string.default_datetime_format));
-
-                    long start = cursor.getLong(cursor.getColumnIndex(ActivityDiaryContract.DiaryActivity.X_START_OF_LAST));
-
-                    viewModel.mStartOfLast.setValue(getResources().
-                            getString(R.string.last_done_description, DateFormat.format(formatString, start)));
-
-                }else if(token == QUERY_CURRENT_ACTIVITY_TOTAL) {
+                    int xStartOfLast = cursor.getColumnIndex(ActivityDiaryContract.DiaryActivity.X_START_OF_LAST);
+                    if(xStartOfLast >= 0) {
+                        long start = cursor.getLong(xStartOfLast);
+                        viewModel.mStartOfLast.setValue(getResources().
+                                getString(R.string.last_done_description, DateFormat.format(formatString, start)));
+                    }
+            }
+            else if(token == QUERY_CURRENT_ACTIVITY_TOTAL)
+                {
                     StatParam p = (StatParam)cookie;
                     long total = cursor.getLong(cursor.getColumnIndex(ActivityDiaryContract.DiaryStats.DURATION));
-
                     String x = DateHelper.dateFormat(p.field).format(p.end);
                     x = x + ": " + TimeSpanFormatter.format(total);
                     switch(p.field){
@@ -749,16 +760,16 @@ public class MainActivity extends BaseActivity implements
                             break;
                     }
                 }
-            }
         }
     }
+}
 
-    private class StatParam {
-        public int field;
-        public long end;
-        public StatParam(int field, long end) {
-            this.field = field;
-            this.end = end;
-        }
+class StatParam {
+    public int field;
+    public long end;
+    public StatParam(int field, long end)
+    {
+        this.field = field;
+        this.end = end;
     }
 }
