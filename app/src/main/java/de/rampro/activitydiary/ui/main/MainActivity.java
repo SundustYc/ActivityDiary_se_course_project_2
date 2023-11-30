@@ -33,6 +33,8 @@ import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
+import androidx.viewpager2.adapter.FragmentStateAdapter;
+
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.format.DateFormat;
@@ -213,9 +215,9 @@ public class MainActivity extends BaseActivity implements
 
         selectorLayoutManager = new StaggeredGridLayoutManager(normalRowCount, StaggeredGridLayoutManager.HORIZONTAL);
         selectRecyclerView.setLayoutManager(selectorLayoutManager);
-        getSupportActionBar().setSubtitle(getResources().getString(R.string.activity_subtitle_main));
+        Objects.requireNonNull(getSupportActionBar()).setSubtitle(getResources().getString(R.string.activity_subtitle_main));
 
-        likelyhoodSort();
+        likelihoodSort();
 
         fabNoteEdit = findViewById(R.id.fab_edit_note);
         fabAttachPicture = findViewById(R.id.fab_attach_picture);
@@ -273,36 +275,43 @@ public class MainActivity extends BaseActivity implements
         }
         //UI 控件的初始化和设置
 
-        // Get the intent, verify the action and get the search query
+
         Intent intent = getIntent();
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
             filterActivityView(query);
         }
-        // 在这里调用onActivityChagned会重新加载统计数据并重新填充视图模型,完全违背了视图模型的理念
-        onActivityChanged(); /* 在最后执行此操作，以确保没有加载器在完成数据加载之前 */
+        //获取意图、验证操作并获取搜索查询
+
+        onActivityChanged(); // 在最后执行此操作，以确保没有加载器在完成数据加载之前
+        // 在这里调用onActivityChanged会重新加载统计数据并重新填充视图模型,完全违背了视图模型的理念
     }
 
-    private File createImageFile() throws IOException {
-        // Create an image file name
+    private File createImageFile() throws IOException
+    {
+        //创建图片文件
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "IMG_";
         if(viewModel.currentActivity().getValue() != null){
             imageFileName += viewModel.currentActivity().getValue().getName();
             imageFileName += "_";
         }
-
         imageFileName += timeStamp;
-        File storageDir = null;
+        //文件名
+
+        File storageDir;
         int permissionCheck = ContextCompat.checkSelfPermission(ActivityDiaryApplication.getAppContext(),
                 Manifest.permission.WRITE_EXTERNAL_STORAGE);
-
-        if(permissionCheck == PackageManager.PERMISSION_GRANTED) {
+        //检查是否有存储权限
+        if(permissionCheck == PackageManager.PERMISSION_GRANTED)
+        {
             storageDir = GraphicsHelper.imageStorageDirectory();
-        }else{
+        }
+        else
+        {
             if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE))
+            {
                 Toast.makeText(this,R.string.perm_write_external_storage_xplain, Toast.LENGTH_LONG).show();
             }
             ActivityCompat.requestPermissions(this,
@@ -322,10 +331,11 @@ public class MainActivity extends BaseActivity implements
                     storageDir);
             */
             return image;
-        }else{
+        }
+        else
+        {
             return null;
         }
-
     }
 
     @Override
@@ -334,29 +344,34 @@ public class MainActivity extends BaseActivity implements
         ActivityHelper.helper.registerDataChangeListener(this);
         onActivityChanged(); //刷新当前活动数据
         super.onResume();
-
-        selectAdapter.notifyDataSetChanged(); // redraw the complete recyclerview
+        selectAdapter.notifyDataSetChanged(); // redraw全部的RecyclerView
         ActivityHelper.helper.evaluateAllConditions(); // 这相当沉重，我不确定在这里无条件地这样做是否合适
     }
 
     @Override
     public void onPause() {
+        //用户离开当前活动时调用
         ActivityHelper.helper.unregisterDataChangeListener(this);
         super.onPause();
     }
 
     @Override
     public boolean onLongClick(View view) {
+        //长按的处理
         Intent i = new Intent(MainActivity.this, EditActivity.class);
+        //创建一个Intent
         if(viewModel.currentActivity().getValue() != null) {
-            i.putExtra("activityID", viewModel.currentActivity().getValue().getId());
+            i.putExtra("activityID", Objects.requireNonNull(viewModel.currentActivity().getValue()).getId());
+            //将当前活动的ID放入Intent中
         }
         startActivity(i);
+        //启动活动
         return true;
     }
 
     @Override
     public boolean onItemLongClick(int adapterPosition){
+        //长按Item的处理
         Intent i = new Intent(MainActivity.this, EditActivity.class);
         i.putExtra("activityID", selectAdapter.item(adapterPosition).getId());
         startActivity(i);
@@ -365,41 +380,36 @@ public class MainActivity extends BaseActivity implements
 
     @Override
     public void onItemClick(int adapterPosition) {
-
+        //点击Item的处理
         DiaryActivity newAct = selectAdapter.item(adapterPosition);
         if(newAct != ActivityHelper.helper.getCurrentActivity()) {
-
             ActivityHelper.helper.setCurrentActivity(newAct);
-
             searchView.setQuery("", false);
             searchView.setIconified(true);
-
-
-            SpannableStringBuilder snackbarText = new SpannableStringBuilder();
-            snackbarText.append(newAct.getName());
-            int end = snackbarText.length();
-            snackbarText.setSpan(new ForegroundColorSpan(newAct.getColor()), 0, end, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
-            snackbarText.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), 0, end, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
-            snackbarText.setSpan(new RelativeSizeSpan((float) 1.4152), 0, end, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
-
+            SpannableStringBuilder snackBarText = new SpannableStringBuilder();
+            snackBarText.append(newAct.getName());
+            int end = snackBarText.length();
+            snackBarText.setSpan(new ForegroundColorSpan(newAct.getColor()), 0, end, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+            snackBarText.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), 0, end, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+            snackBarText.setSpan(new RelativeSizeSpan((float) 1.4152), 0, end, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+            //SnackBar:在移动设备的屏幕底部显示一条简短消息,出现在屏幕上所有其他元素的上方
             Snackbar undoSnackBar = Snackbar.make(findViewById(R.id.main_layout),
-                    snackbarText, Snackbar.LENGTH_LONG);
-            undoSnackBar.setAction(R.string.action_undo, new View.OnClickListener() {
-                /**
-                 * Called when a view has been clicked.
-                 *
-                 * @param v The view that was clicked.
-                 */
+                    snackBarText, Snackbar.LENGTH_LONG);
+            undoSnackBar.setAction(R.string.action_undo, new View.OnClickListener()
+            {
                 @Override
                 public void onClick(View v) {
+                    /*
+                    Called when a view has been clicked
+                    */
                     Log.v(TAG, "UNDO Activity Selection");
                     ActivityHelper.helper.undoLastActivitySelection();
                 }
             });
             undoSnackBar.show();
         }else{
-            /* clicked the currently active activity in the list, so let's terminate it due to #176 */
             ActivityHelper.helper.setCurrentActivity(null);
+            //单击列表中的当前活动，终止该活动
         }
     }
 
@@ -433,12 +443,11 @@ public class MainActivity extends BaseActivity implements
         viewModel.mAvgDuration.setValue("-");
         viewModel.mStartOfLast.setValue("-");
         viewModel.mTotalToday.setValue("-");
-        /* stats are updated after query finishes in mQHelper */
 
         if(viewModel.currentActivity().getValue() != null) {
-            aName.setText(viewModel.currentActivity().getValue().getName());
-            findViewById(R.id.activity_background).setBackgroundColor(viewModel.currentActivity().getValue().getColor());
-            aName.setTextColor(GraphicsHelper.textColorOnBackground(viewModel.currentActivity().getValue().getColor()));
+            aName.setText(Objects.requireNonNull(viewModel.currentActivity().getValue()).getName());
+            findViewById(R.id.activity_background).setBackgroundColor(Objects.requireNonNull(viewModel.currentActivity().getValue()).getColor());
+            aName.setTextColor(GraphicsHelper.textColorOnBackground(Objects.requireNonNull(viewModel.currentActivity().getValue()).getColor()));
             viewModel.mNote.setValue(ActivityHelper.helper.getCurrentNote());
         }else{
             int col;
@@ -453,11 +462,12 @@ public class MainActivity extends BaseActivity implements
             viewModel.mDuration.setValue("-");
             viewModel.mNote.setValue("");
         }
+        //在 mQHelper 中查询完成后更新统计量
         selectorLayoutManager.scrollToPosition(0);
     }
 
     public void queryAllTotals() {
-        // TODO: move this into the DetailStatFragement
+        // TODO: move this into the DetailStatFragment
         DiaryActivity a = viewModel.mCurrentActivity.getValue();
         if(a != null) {
             int id = a.getId();
@@ -489,14 +499,12 @@ public class MainActivity extends BaseActivity implements
                 null);
     }
 
-    /**
-     * Called on change of the activity order due to likelyhood.
-     */
+
     @Override
     public void onActivityOrderChanged() {
-        /* only do likelihood sort in case we are not in a search */
+        // 只有在不进行搜索时才会进行可能性排序(由于可能性而更改活动顺序时调用)
         if(filter.length() == 0){
-            likelyhoodSort();
+            likelihoodSort();
         }
     }
 
@@ -579,7 +587,7 @@ public class MainActivity extends BaseActivity implements
     private void filterActivityView(String query){
         this.filter = query;
         if(filter.length() == 0){
-            likelyhoodSort();
+            likelihoodSort();
         }else {
             ArrayList<DiaryActivity> filtered = ActivityHelper.helper.sortedActivities(query);
 
@@ -589,7 +597,7 @@ public class MainActivity extends BaseActivity implements
         }
     }
 
-    private void likelyhoodSort() {
+    private void likelihoodSort() {
         selectAdapter = new SelectRecyclerViewAdapter(MainActivity.this, ActivityHelper.helper.getActivities());
         selectRecyclerView.swapAdapter(selectAdapter, false);
     }
@@ -597,8 +605,8 @@ public class MainActivity extends BaseActivity implements
     @Override
     public boolean onClose() {
         setSearchMode(false);
-        likelyhoodSort();
-        return false; /* we wanna clear and close the search */
+        likelihoodSort();
+        return false; // clear and close the search
     }
 
     @Override
@@ -610,7 +618,7 @@ public class MainActivity extends BaseActivity implements
     @Override
     public boolean onQueryTextChange(String newText) {
         filterActivityView(newText);
-        return true; /* we handle the search directly, so no suggestions need to be show even if #70 is implemented */
+        return true; //直接搜索
     }
 
     @Override
@@ -651,13 +659,13 @@ public class MainActivity extends BaseActivity implements
                     try {
                         ExifInterface exifInterface = new ExifInterface(mCurrentPhotoPath);
                         if (viewModel.currentActivity().getValue() != null) {
-                            /* TODO: #24: when using hierarchical activities tag them all here, seperated with comma */
+                            /* TODO: #24: when using hierarchical activities tag them all here, separated with comma */
                             /* would be great to use IPTC keywords instead of EXIF UserComment, but
                              * at time of writing (2017-11-24) it is hard to find a library able to write IPTC
                              * to JPEG for android.
                              * pixymeta-android or apache/commons-imaging could be interesting for this.
                              * */
-                            exifInterface.setAttribute(ExifInterface.TAG_USER_COMMENT, viewModel.currentActivity().getValue().getName());
+                            exifInterface.setAttribute(ExifInterface.TAG_USER_COMMENT, Objects.requireNonNull(viewModel.currentActivity().getValue()).getName());
                             exifInterface.saveAttributes();
                         }
                     } catch (IOException e) {
@@ -725,19 +733,21 @@ public class MainActivity extends BaseActivity implements
             {
                 if (token == QUERY_CURRENT_ACTIVITY_STATS) {
                     int xAvgDuration = cursor.getColumnIndex(ActivityDiaryContract.DiaryActivity.X_AVG_DURATION);
+                    long avg=0;
                     if(xAvgDuration >= 0)
                     {
-                        long avg = cursor.getLong(xAvgDuration);
+                        avg = cursor.getLong(xAvgDuration);
                     }
                     viewModel.mAvgDuration.setValue(getResources().
-                            getString(R.string.avg_duration_description, TimeSpanFormatter.format(0)));
+                            getString(R.string.avg_duration_description, TimeSpanFormatter.format(avg)));
                     }
                     SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(ActivityDiaryApplication.getAppContext());
                     String formatString = sharedPref.getString(SettingsActivity.KEY_PREF_DATETIME_FORMAT,
                             getResources().getString(R.string.default_datetime_format));
                     int xStartOfLast = cursor.getColumnIndex(ActivityDiaryContract.DiaryActivity.X_START_OF_LAST);
+                    long start;
                     if(xStartOfLast >= 0) {
-                        long start = cursor.getLong(xStartOfLast);
+                        start = cursor.getLong(xStartOfLast);
                         viewModel.mStartOfLast.setValue(getResources().
                                 getString(R.string.last_done_description, DateFormat.format(formatString, start)));
                     }
@@ -745,7 +755,17 @@ public class MainActivity extends BaseActivity implements
             else if(token == QUERY_CURRENT_ACTIVITY_TOTAL)
                 {
                     StatParam p = (StatParam)cookie;
-                    long total = cursor.getLong(cursor.getColumnIndex(ActivityDiaryContract.DiaryStats.DURATION));
+                    int DURATION= 0;
+                    if (cursor != null) {
+                        DURATION = cursor.getColumnIndex(ActivityDiaryContract.DiaryStats.DURATION);
+                    }
+                    long total=0;
+                    if(DURATION >= 0)
+                    {
+                        if (cursor != null) {
+                            total = cursor.getLong(DURATION);
+                        }
+                    }
                     String x = DateHelper.dateFormat(p.field).format(p.end);
                     x = x + ": " + TimeSpanFormatter.format(total);
                     switch(p.field){
