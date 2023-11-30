@@ -2,9 +2,6 @@ package de.rampro.activitydiary.ui.main;
 
 import android.Manifest;
 import android.app.SearchManager;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
 import android.content.AsyncQueryHandler;
 import android.content.ContentResolver;
 import android.content.ContentValues;
@@ -17,24 +14,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-import com.google.android.material.tabs.TabLayout;
-import androidx.exifinterface.media.ExifInterface;
-import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.core.content.ContextCompat;
-import androidx.core.content.FileProvider;
-import androidx.viewpager.widget.ViewPager;
-import androidx.preference.PreferenceManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.appcompat.widget.SearchView;
-import androidx.recyclerview.widget.StaggeredGridLayoutManager;
-import androidx.viewpager2.adapter.FragmentStateAdapter;
-
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.format.DateFormat;
@@ -51,6 +30,25 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.widget.SearchView;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
+import androidx.exifinterface.media.ExifInterface;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.preference.PreferenceManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
+import androidx.viewpager.widget.ViewPager;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.tabs.TabLayout;
 
 import java.io.File;
 import java.io.IOException;
@@ -76,9 +74,7 @@ import de.rampro.activitydiary.ui.generic.EditActivity;
 import de.rampro.activitydiary.ui.history.HistoryDetailActivity;
 import de.rampro.activitydiary.ui.settings.SettingsActivity;
 
-/*
-MainActivity 根据fragments的切换显示大部分用户界面
-*/
+
 public class MainActivity extends BaseActivity implements
         SelectRecyclerViewAdapter.SelectListener,
         ActivityHelper.DataChangedListener,
@@ -87,6 +83,9 @@ public class MainActivity extends BaseActivity implements
         SearchView.OnQueryTextListener,
         SearchView.OnCloseListener
 {
+    /**
+     *MainActivity 根据fragments的切换显示大部分用户界面
+     */
     private static final String TAG = MainActivity.class.getSimpleName();
     //在日志输出或调试信息中标识出相关类的名称
 
@@ -112,87 +111,93 @@ public class MainActivity extends BaseActivity implements
     private ViewPager viewPager;//视图的翻页
     private TabLayout tabLayout;//标签的布局
     private View headerView;//头部的视图
-
+    /**
+     *设置搜索时某些组件的显示与隐藏
+     */
     private void setSearchMode(boolean searchMode){
+
         if(searchMode){
-            headerView.setVisibility(View.GONE);
-            //隐藏头部的视图
-            fabNoteEdit.hide();
-            //隐藏编辑的按钮
-            fabAttachPicture.hide();
-            //隐藏附加图片的按钮
+            headerView.setVisibility(View.GONE);//隐藏头部的视图
+            fabNoteEdit.hide();//隐藏编辑的按钮
+            fabAttachPicture.hide();//隐藏附加图片的按钮
+            //设置软键盘的模式
             getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-            //设置软键盘的模式
+            //设置布局管理器的每行的列数
             ((StaggeredGridLayoutManager) Objects.requireNonNull(selectRecyclerView.getLayoutManager())).setSpanCount(searchRowCount);
-            //设置布局管理器的每行的列数
         }else{
-            ((StaggeredGridLayoutManager) Objects.requireNonNull(selectRecyclerView.getLayoutManager())).setSpanCount(normalRowCount);
             //设置布局管理器的每行的列数
-            getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+            ((StaggeredGridLayoutManager) Objects.requireNonNull(selectRecyclerView.getLayoutManager())).setSpanCount(normalRowCount);
             //设置软键盘的模式
-            headerView.setVisibility(View.VISIBLE);
-            //显示头部的视图
-            fabNoteEdit.show();
-            //显示编辑的按钮
-            fabAttachPicture.show();
-            //显示附加图片的按钮
+            getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+            headerView.setVisibility(View.VISIBLE);//显示头部的视图
+            fabNoteEdit.show();//显示编辑的按钮
+            fabAttachPicture.show();//显示附加图片的按钮
         }
 
     }
-    //设置搜索时某些组件的显示与隐藏
 
+    //异步查询处理程序
     private MainAsyncQueryHandler mQHandler =
             new MainAsyncQueryHandler(ActivityDiaryApplication.getAppContext().getContentResolver());
-    //异步查询处理程序
 
+
+    /**
+     *在活动被销毁时调用
+     *保存当前图片的路径
+     *调用超类来保存视图层次结构/实例状态
+     */
     @Override
     public void onSaveInstanceState(Bundle outState) {
+
         outState.putString("currentPhotoPath", mCurrentPhotoPath);
-        // 保存当前图片的路径
         super.onSaveInstanceState(outState);
-        // 调用超类来保存任何视图层次结构/实例状态
     }
 
-    @Override //在活动创建时调用
+    /**
+     *在活动创建时调用
+     */
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
-
+        /**
+         *原(已弃用)：viewModel = ViewModelProviders.of(this).get(DetailViewModel.class);
+         *设置内容视图
+         *使用 ViewModelProvider 创建并获取 DetailViewModel 的实例
+         *ViewModel 用于存储与 UI 相关的数据，以便在配置更改（如屏幕旋转）时保持数据的一致性。
+         */
         viewModel = new ViewModelProvider(this).get(DetailViewModel.class);
-        /*
-        原(已弃用)：viewModel = ViewModelProviders.of(this).get(DetailViewModel.class);
-        设置内容视图
-        使用 ViewModelProvider 创建并获取 DetailViewModel 的实例
-        ViewModel 用于存储与 UI 相关的数据，以便在配置更改（如屏幕旋转）时保持数据的一致性。
-        */
         if (savedInstanceState != null) {
-            mCurrentPhotoPath = savedInstanceState.getString("currentPhotoPath");
             // 从保存的实例状态恢复当前图片的路径
+            mCurrentPhotoPath = savedInstanceState.getString("currentPhotoPath");
         }
-
-        LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         //获取布局填充器，用于将 XML 布局文件转换为 View 对象。
-        View contentView = inflater.inflate(R.layout.activity_main_content, null, false);
+        LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         //使用布局填充器将 R.layout.activity_main_content 转换为 View 对象。这是设置活动内容视图的一部分
-        setContent(contentView);
+        View contentView = inflater.inflate(R.layout.activity_main_content, null, false);
         //设置活动的内容视图为 contentView
+        setContent(contentView);
 
+        //通过查找 XML 布局文件中定义的视图 ID 获取对应的视图对象。
         headerView = findViewById(R.id.header_area);
         tabLayout = findViewById(R.id.tablayout);
         viewPager = findViewById(R.id.viewpager);
         selectRecyclerView = findViewById(R.id.select_recycler);
         View selector = findViewById(R.id.activity_background);
-        //通过查找 XML 布局文件中定义的视图 ID 获取对应的视图对象。
 
-        setupViewPager(viewPager);
         //设置视图翻页   详见setupViewPager方法
-        tabLayout.setupWithViewPager(viewPager);
+        setupViewPager(viewPager);
         //设置标签布局与视图翻页的关联
-
-        selector.setOnLongClickListener(this);
+        tabLayout.setupWithViewPager(viewPager);
         //设置长按事件的监听器
+        selector.setOnLongClickListener(this);
+        /**
+         *设置选择的适配器
+         *设置选择的监听器
+         *TODO: get rid of this setting?
+         */
         selector.setOnClickListener(v -> {
-            // 设置点击事件的监听器，其中包含了一些逻辑处理。
-            // TODO: get rid of this setting?
+
             if(PreferenceManager
                     .getDefaultSharedPreferences(ActivityDiaryApplication.getAppContext())
                     .getBoolean(SettingsActivity.KEY_PREF_DISABLE_CURRENT, true)){
@@ -200,7 +205,6 @@ public class MainActivity extends BaseActivity implements
             }else{
                 Intent i = new Intent(MainActivity.this, HistoryDetailActivity.class);
                 startActivity(i);
-                // 没有日记条目 ID 将编辑最后一个条目
             }
         });
 
@@ -221,9 +225,9 @@ public class MainActivity extends BaseActivity implements
 
         fabNoteEdit = findViewById(R.id.fab_edit_note);
         fabAttachPicture = findViewById(R.id.fab_attach_picture);
-
+        // 处理 FAB 上的点击
         fabNoteEdit.setOnClickListener(v -> {
-            // 处理 FAB 上的点击
+
             if(viewModel.currentActivity().getValue() != null) {
                 NoteEditDialog dialog = new NoteEditDialog();
                 dialog.setText(viewModel.mNote.getValue());
@@ -232,9 +236,9 @@ public class MainActivity extends BaseActivity implements
                 Toast.makeText(MainActivity.this, getResources().getString(R.string.no_active_activity_error), Toast.LENGTH_LONG).show();
             }
         });
-
+        // 处理 FAB 上的点击
         fabAttachPicture.setOnClickListener(v -> {
-            // 处理 FAB 上的点击
+
             if(viewModel.currentActivity() != null) {
                 Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
@@ -273,23 +277,26 @@ public class MainActivity extends BaseActivity implements
         }else{
             fabAttachPicture.hide();
         }
-        //UI 控件的初始化和设置
 
 
+        //获取Intent、验证操作并获取搜索查询
         Intent intent = getIntent();
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
             filterActivityView(query);
         }
-        //获取意图、验证操作并获取搜索查询
 
-        onActivityChanged(); // 在最后执行此操作，以确保没有加载器在完成数据加载之前
-        // 在这里调用onActivityChanged会重新加载统计数据并重新填充视图模型,完全违背了视图模型的理念
+        // 在这里调用onActivityChanged会重新加载统计数据并重新填充视图模型,违背了视图模型的理念
+        onActivityChanged(); // 在最后执行此操作，以确保在完成数据加载之前没有加载器
+
     }
 
+    /**
+     *创建一个文件用于保存图片
+     */
     private File createImageFile() throws IOException
     {
-        //创建图片文件
+        //文件名
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "IMG_";
         if(viewModel.currentActivity().getValue() != null){
@@ -297,12 +304,11 @@ public class MainActivity extends BaseActivity implements
             imageFileName += "_";
         }
         imageFileName += timeStamp;
-        //文件名
 
         File storageDir;
+        //检查是否有存储权限
         int permissionCheck = ContextCompat.checkSelfPermission(ActivityDiaryApplication.getAppContext(),
                 Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        //检查是否有存储权限
         if(permissionCheck == PackageManager.PERMISSION_GRANTED)
         {
             storageDir = GraphicsHelper.imageStorageDirectory();
@@ -323,13 +329,10 @@ public class MainActivity extends BaseActivity implements
         if(storageDir != null){
             File image = new File(storageDir, imageFileName + ".jpg");
             image.createNewFile();
-            /*
-            #80
-            File image = File.createTempFile(
-                    imageFileName,
-                    ".jpg",
-                    storageDir);
-            */
+            /**
+             * #80
+             * File image = File.createTempFile(imageFileName,".jpg",storageDir);
+             */
             return image;
         }
         else
@@ -345,19 +348,24 @@ public class MainActivity extends BaseActivity implements
         onActivityChanged(); //刷新当前活动数据
         super.onResume();
         selectAdapter.notifyDataSetChanged(); // redraw全部的RecyclerView
-        ActivityHelper.helper.evaluateAllConditions(); // 这相当沉重，我不确定在这里无条件地这样做是否合适
+        ActivityHelper.helper.evaluateAllConditions(); // heavy，合适？
     }
 
+    /**
+     * 用户离开当前活动时调用
+     */
     @Override
     public void onPause() {
-        //用户离开当前活动时调用
+
         ActivityHelper.helper.unregisterDataChangeListener(this);
         super.onPause();
     }
 
+    /**
+     *长按的处理
+     */
     @Override
     public boolean onLongClick(View view) {
-        //长按的处理
         Intent i = new Intent(MainActivity.this, EditActivity.class);
         //创建一个Intent
         if(viewModel.currentActivity().getValue() != null) {
@@ -369,18 +377,23 @@ public class MainActivity extends BaseActivity implements
         return true;
     }
 
+    /**
+     * 长按Item的处理
+     */
     @Override
     public boolean onItemLongClick(int adapterPosition){
-        //长按Item的处理
+
         Intent i = new Intent(MainActivity.this, EditActivity.class);
         i.putExtra("activityID", selectAdapter.item(adapterPosition).getId());
         startActivity(i);
         return true;
     }
 
+    /**
+     * 点击Item的处理
+     */
     @Override
     public void onItemClick(int adapterPosition) {
-        //点击Item的处理
         DiaryActivity newAct = selectAdapter.item(adapterPosition);
         if(newAct != ActivityHelper.helper.getCurrentActivity()) {
             ActivityHelper.helper.setCurrentActivity(newAct);
@@ -397,26 +410,25 @@ public class MainActivity extends BaseActivity implements
                     snackBarText, Snackbar.LENGTH_LONG);
             undoSnackBar.setAction(R.string.action_undo, new View.OnClickListener()
             {
+                /**
+                 *Called when a view has been clicked
+                 */
                 @Override
                 public void onClick(View v) {
-                    /*
-                    Called when a view has been clicked
-                    */
                     Log.v(TAG, "UNDO Activity Selection");
                     ActivityHelper.helper.undoLastActivitySelection();
                 }
             });
             undoSnackBar.show();
         }else{
-            ActivityHelper.helper.setCurrentActivity(null);
             //单击列表中的当前活动，终止该活动
+            ActivityHelper.helper.setCurrentActivity(null);
         }
     }
 
     public void onActivityChanged(){
         DiaryActivity newAct = ActivityHelper.helper.getCurrentActivity();
         viewModel.mCurrentActivity.setValue(newAct);
-
         if(newAct != null) {
             mQHandler.startQuery(QUERY_CURRENT_ACTIVITY_STATS, null,
                     ActivityDiaryContract.DiaryActivity.CONTENT_URI,
@@ -508,9 +520,9 @@ public class MainActivity extends BaseActivity implements
         }
     }
 
-    /*
-    Called when the data has changed.
-    */
+    /**
+     *Called when the data has changed.
+     */
     @Override
     public void onActivityDataChanged() {
         selectAdapter.notifyDataSetChanged();
@@ -521,24 +533,25 @@ public class MainActivity extends BaseActivity implements
         selectAdapter.notifyItemChanged(selectAdapter.positionOf(activity));
     }
 
-    /*
-    Called on addition of an activity.
-    @param activity
-    */
+    /**
+     *Called on addition of an activity.
+     */
     @Override
     public void onActivityAdded(DiaryActivity activity) {
         /* no need to add it, as due to the reevaluation of the conditions the order change will happen */
     }
 
-    /*
-    Called on removable of an activity.
-    @param activity
-    */
+    /**
+     *在删除活动时调用
+     */
     @Override
     public void onActivityRemoved(DiaryActivity activity) {
         selectAdapter.notifyDataSetChanged();
     }
 
+    /**
+     * 当数据发生变化时调用
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -549,7 +562,6 @@ public class MainActivity extends BaseActivity implements
         searchView = (SearchView) searchMenuItem.getActionView();
         // 假设当前活动为可搜索活动，设置该SearchView显示搜索按钮
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-
         searchView.setOnCloseListener(this);
         searchView.setOnQueryTextListener(this);
         // setOnSuggestionListener -> for selection of a suggestion
@@ -558,6 +570,9 @@ public class MainActivity extends BaseActivity implements
         return true;
     }
 
+    /**
+     *Called when the user selects an item from the options menu.
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()){
@@ -638,6 +653,9 @@ public class MainActivity extends BaseActivity implements
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        /**
+         * 当从相机应用程序返回时调用
+         */
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             if (mCurrentPhotoPath != null && viewModel.getCurrentDiaryUri() != null) {
@@ -659,12 +677,13 @@ public class MainActivity extends BaseActivity implements
                     try {
                         ExifInterface exifInterface = new ExifInterface(mCurrentPhotoPath);
                         if (viewModel.currentActivity().getValue() != null) {
-                            /* TODO: #24: when using hierarchical activities tag them all here, separated with comma */
-                            /* would be great to use IPTC keywords instead of EXIF UserComment, but
+                            // TODO: #24: when using hierarchical activities tag them all here, separated with comma
+                            /**
+                             * would be great to use IPTC keywords instead of EXIF UserComment, but
                              * at time of writing (2017-11-24) it is hard to find a library able to write IPTC
                              * to JPEG for android.
                              * pixymeta-android or apache/commons-imaging could be interesting for this.
-                             * */
+                             */
                             exifInterface.setAttribute(ExifInterface.TAG_USER_COMMENT, Objects.requireNonNull(viewModel.currentActivity().getValue()).getName());
                             exifInterface.saveAttributes();
                         }
@@ -678,6 +697,9 @@ public class MainActivity extends BaseActivity implements
 
 
     private void setupViewPager(ViewPager viewPager) {
+        /**
+         *设置视图翻页的适配器
+         */
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new DetailStatFragement(), getResources().getString(R.string.fragment_detail_stats_title));
         adapter.addFragment(new DetailNoteFragment(), getResources().getString(R.string.fragment_detail_note_title));
@@ -685,10 +707,12 @@ public class MainActivity extends BaseActivity implements
         viewPager.setAdapter(adapter);
     }
 
+    /**
+     *视图翻页的适配器
+     */
     class ViewPagerAdapter extends FragmentPagerAdapter {
         private final List<Fragment> mFragmentList = new ArrayList<>();
         private final List<String> mFragmentTitleList = new ArrayList<>();
-
         public ViewPagerAdapter(FragmentManager manager) {
             super(manager);
         }
@@ -714,17 +738,25 @@ public class MainActivity extends BaseActivity implements
         }
     }
 
-
+    /**
+     *异步查询处理程序
+     */
     private class MainAsyncQueryHandler extends AsyncQueryHandler{
+
         public MainAsyncQueryHandler(ContentResolver cr) {
             super(cr);
         }
-
+        /**
+         * 启动异步查询时调用
+         */
         @Override
         public void startQuery(int token, Object cookie, Uri uri, String[] projection, String selection, String[] selectionArgs, String orderBy) {
             super.startQuery(token, cookie, uri, projection, selection, selectionArgs, orderBy);
         }
 
+        /**
+         * 当异步查询完成时调用
+         */
         @Override
         protected void onQueryComplete(int token, Object cookie, Cursor cursor)
         {
@@ -783,6 +815,7 @@ public class MainActivity extends BaseActivity implements
         }
     }
 }
+
 
 class StatParam {
     public int field;
