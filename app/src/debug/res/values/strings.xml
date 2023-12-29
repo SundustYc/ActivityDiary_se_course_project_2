@@ -17,7 +17,7 @@
   ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-    <string name="app_name">Activity Diary Debug</string>
+    <string name="app_name" translatable="false">Activity Diary Debug</string>
     <string name="search_provider_authority" translatable="false">de.rampro.activitydiary.debug.provider</string>
 
 </resources>
