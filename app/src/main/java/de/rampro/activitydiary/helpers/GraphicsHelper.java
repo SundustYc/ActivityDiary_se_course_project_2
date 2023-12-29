@@ -51,21 +51,27 @@ public class GraphicsHelper {
     public static ArrayList<Integer> activityColorPalette = new ArrayList<Integer>(19);
 
     /* Checks if external storage is available for read and write */
-    public static boolean isExternalStorageWritable() {
+    public static boolean isExternalStorageWritable()
+    {
         String state = Environment.getExternalStorageState();
-        if (Environment.MEDIA_MOUNTED.equals(state)) {
+        if (Environment.MEDIA_MOUNTED.equals(state))
+        {
             return true;
         }
         return false;
     }
 
-    public static File imageStorageDirectory(){
+    public static File imageStorageDirectory()
+    {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(ActivityDiaryApplication.getAppContext());
         File directory;
 
-        if(isExternalStorageWritable()) {
+        if(isExternalStorageWritable())
+        {
             directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-        }else {
+        }
+        else
+        {
             directory = ActivityDiaryApplication.getAppContext().getFilesDir();
         }
 
@@ -82,17 +88,52 @@ public class GraphicsHelper {
                     throw new RuntimeException("failed to create directory " + root.toString());
                 }
             }
-        } else {
+        }
+        else {
             /* no permission, return null */
         }
-
         return root;
     }
 
-    /* return the rotation of the image at uri from the exif data
-     *
+    public static File audioStorageDirectory()
+    {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(ActivityDiaryApplication.getAppContext());
+        File directory;
+
+        if(isExternalStorageWritable()) {
+            directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC);
+        }else {
+            directory = ActivityDiaryApplication.getAppContext().getFilesDir();
+        }
+
+        File root = new File(directory,
+                sharedPreferences.getString(SettingsActivity.KEY_PREF_STORAGE_FOLDER, "ActivityAudio"));
+
+        int permissionCheck = ContextCompat.checkSelfPermission(ActivityDiaryApplication.getAppContext(),
+                Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+        if (permissionCheck == PackageManager.PERMISSION_GRANTED)
+        {
+            if (!root.exists())
+            {
+                if (!root.mkdirs())
+                {
+                    Log.e(TAG, "failed to create directory");
+                    throw new RuntimeException("failed to create directory " + root.toString());
+                }
+            }
+        }
+        else {
+            /* no permission, return null */
+        }
+        return root;
+    }
+
+
+    /**
+     * return the rotation of the image at uri from the exif data
      * do better not call this for a network uri, as this would probably mean to fetch it twice
-     * */
+     */
     public static int getFileExifRotation(Uri uri) {
         try {
             InputStream inputStream = ActivityDiaryApplication.getAppContext().getContentResolver().openInputStream(uri);

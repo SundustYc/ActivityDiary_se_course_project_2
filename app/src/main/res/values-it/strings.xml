@@ -271,4 +271,5 @@
     <string name="privacy_rights_text">In qualsiasi momento e gratuitamente hai il diritto di chiederci quali dati memorizziamo su di te. Puoi sempre richiedere la correzione o la rimozione dei dati personali o limitare l\'uso dei tuoi dati.</string>
     <string name="privacy_contact_title">Contattaci</string>
     <string name="privacy_contact_text">Se hai domande o commenti su questa Informativa sulla privacy, ti preghiamo di contattarci a:</string>
+    <string name="no_available_cameras">There are no cameras available.</string>
 </resources>

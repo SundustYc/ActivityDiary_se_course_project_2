@@ -106,6 +106,8 @@ public class MainActivity extends BaseActivity implements
     private FloatingActionButton fabNoteEdit;//编辑的按钮
 
     private FloatingActionButton fabAttachPicture;//附加图片的按钮
+    private FloatingActionButton fabAttachAudio;//附加录音的按钮
+    private FloatingActionButton fabAttachVideo;//附加视频的按钮
     private SearchView searchView;//搜索的视图
     private MenuItem searchMenuItem;//搜索的菜单项
     private ViewPager viewPager;//视图的翻页
@@ -116,15 +118,20 @@ public class MainActivity extends BaseActivity implements
      */
     private void setSearchMode(boolean searchMode){
 
-        if(searchMode){
+        if(searchMode)
+        {
             headerView.setVisibility(View.GONE);//隐藏头部的视图
             fabNoteEdit.hide();//隐藏编辑的按钮
             fabAttachPicture.hide();//隐藏附加图片的按钮
+            fabAttachAudio.hide();
+            fabAttachVideo.hide();
             //设置软键盘的模式
             getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
             //设置布局管理器的每行的列数
             ((StaggeredGridLayoutManager) Objects.requireNonNull(selectRecyclerView.getLayoutManager())).setSpanCount(searchRowCount);
-        }else{
+        }
+        else
+        {
             //设置布局管理器的每行的列数
             ((StaggeredGridLayoutManager) Objects.requireNonNull(selectRecyclerView.getLayoutManager())).setSpanCount(normalRowCount);
             //设置软键盘的模式
@@ -132,6 +139,8 @@ public class MainActivity extends BaseActivity implements
             headerView.setVisibility(View.VISIBLE);//显示头部的视图
             fabNoteEdit.show();//显示编辑的按钮
             fabAttachPicture.show();//显示附加图片的按钮
+            fabAttachAudio.show();
+            fabAttachVideo.show();
         }
 
     }
@@ -224,8 +233,7 @@ public class MainActivity extends BaseActivity implements
         likelihoodSort();
 
         fabNoteEdit = findViewById(R.id.fab_edit_note);
-        fabAttachPicture = findViewById(R.id.fab_attach_picture);
-        // 处理 FAB 上的点击
+        // 处理Edit
         fabNoteEdit.setOnClickListener(v -> {
 
             if(viewModel.currentActivity().getValue() != null) {
@@ -236,7 +244,9 @@ public class MainActivity extends BaseActivity implements
                 Toast.makeText(MainActivity.this, getResources().getString(R.string.no_active_activity_error), Toast.LENGTH_LONG).show();
             }
         });
-        // 处理 FAB 上的点击
+
+        // 处理Picture按钮
+        fabAttachPicture = findViewById(R.id.fab_attach_picture);
         fabAttachPicture.setOnClickListener(v -> {
             //currentActivity指的就是你当前选择记录的活动
             //原始代码直接判断currentActivity()是否为null，你前面创建了实例怎么可能null...
@@ -289,6 +299,8 @@ public class MainActivity extends BaseActivity implements
             fabAttachPicture.hide();
         }
 
+        fabAttachAudio = findViewById(R.id.fab_attach_audio);
+        fabAttachVideo = findViewById(R.id.fab_attach_video);
 
         //获取Intent、验证操作并获取搜索查询
         Intent intent = getIntent();
@@ -334,7 +346,8 @@ public class MainActivity extends BaseActivity implements
             storageDir = null;
         }
 
-        if(storageDir != null){
+        if(storageDir != null)
+        {
             File image = new File(storageDir, imageFileName + ".jpg");
             image.createNewFile();
             /**
@@ -344,9 +357,43 @@ public class MainActivity extends BaseActivity implements
             return image;
         }
         else
-        {
             return null;
+    }
+
+    private File createAudioFile() throws IOException
+    {
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "Sound_";
+        imageFileName += viewModel.currentActivity().getValue().getName();
+        imageFileName += "_";
+        imageFileName += timeStamp;
+        int permissionCheck = ContextCompat.checkSelfPermission(ActivityDiaryApplication.getAppContext(),
+                Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        File storageDir;
+        if(permissionCheck == PackageManager.PERMISSION_GRANTED)
+        {
+            storageDir = GraphicsHelper.audioStorageDirectory();
         }
+        else
+        {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE))
+            {
+                Toast.makeText(this,R.string.perm_write_external_storage_xplain, Toast.LENGTH_LONG).show();
+            }
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE);
+            storageDir = null;
+        }
+        if(storageDir != null)
+        {
+            File audio = new File(storageDir, imageFileName + ".mp3");
+            audio.createNewFile();
+            return audio;
+        }
+        else
+            return null;
     }
 
     @Override

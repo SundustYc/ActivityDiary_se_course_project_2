@@ -54,7 +54,7 @@
                     android:layout_height="wrap_content"
                     android:scrollHorizontally="false"
                     android:text="@{viewModel.mNote}"
-                    android:textSize="16sp"/>
+                    android:textSize="24sp"/>
 
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>

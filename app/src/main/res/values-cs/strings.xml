@@ -279,4 +279,5 @@
     <string name="privacy_rights_text">At any time and free of cost you have the right to ask us about which data we store about you. You can always request for correction or removal of personal data or restrict the use of your data.</string>
     <string name="privacy_contact_title">Contact us</string>
     <string name="privacy_contact_text">If you have questions or comments about this Privacy Policy, please contact us at:</string>
+    <string name="no_available_cameras">There are no cameras available.</string>
 </resources>

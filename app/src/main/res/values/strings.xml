@@ -281,8 +281,8 @@
     <string name="desc_start_time">Start time</string>
     <string name="desc_end_date">End date</string>
     <string name="desc_end_time">End time</string>
-    <string name="history_detail_start" tools:ignore="MissingTranslation">Start</string>
-    <string name="history_detail_end" tools:ignore="MissingTranslation">End</string>
+    <string name="history_detail_start">Start</string>
+    <string name="history_detail_end">End</string>
     <string name="adjust_adjacent_times">Adjust adjacent diary entries</string>
     <string name="constraint_positive_duration">The activity shall always start before it ends.</string>
     <string name="search_notes">Search \'%1$s\' in notes&#x2026;</string>
@@ -350,6 +350,6 @@
     <string name="privacy_contact_text">If you have questions or comments about this Privacy Policy, please contact us at:</string>
     <string name="privacy_contact_address" translatable="false">Sundust/China</string>
     <string name="privacy_contact_email" translatable="false">SundustYc@outlook.com</string>
-    <string name="no_available_cameras" translatable="false">There are no cameras available.</string>
+    <string name="no_available_cameras">There are no cameras available.</string>
 
 </resources>

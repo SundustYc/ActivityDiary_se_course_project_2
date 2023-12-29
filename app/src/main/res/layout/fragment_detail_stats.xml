@@ -54,7 +54,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:nestedScrollingEnabled="true"
-                    android:textSize="16sp"
+                    android:textSize="24sp"
                     android:text='@{viewModel.duration()}'
                     />
 
@@ -63,7 +63,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:nestedScrollingEnabled="true"
-                    android:textSize="16sp"
+                    android:textSize="24sp"
                     android:text='@{viewModel.mAvgDuration}'
                     />
 
@@ -72,7 +72,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:nestedScrollingEnabled="true"
-                    android:textSize="16sp"
+                    android:textSize="24sp"
                     android:text='@{viewModel.mStartOfLast}'
                     />
 
@@ -81,7 +81,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:nestedScrollingEnabled="true"
-                    android:textSize="16sp"
+                    android:textSize="24sp"
                     android:text='@{viewModel.mTotalToday}'
                     />
                 <TextView
@@ -89,7 +89,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:nestedScrollingEnabled="true"
-                    android:textSize="16sp"
+                    android:textSize="24sp"
                     android:text='@{viewModel.mTotalWeek}'
                     />
                 <TextView
@@ -97,7 +97,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:nestedScrollingEnabled="true"
-                    android:textSize="16sp"
+                    android:textSize="24sp"
                     android:text='@{viewModel.mTotalMonth}'
                     />
             </LinearLayout>

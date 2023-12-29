@@ -271,4 +271,5 @@
     <string name="privacy_rights_text">Sie haben jederzeit das Recht, uns zu fragen, welche Daten wir über Sie speichern. Sie können jederzeit die Berichtigung oder Entfernung personenbezogener Daten verlangen oder die Verwendung Ihrer Daten einschränken.</string>
     <string name="privacy_contact_title">Kontakt</string>
     <string name="privacy_contact_text">Bei Fragen oder Anmerkungen zu dieser Datenschutzerklärung kontaktieren Sie uns bitte über:</string>
+    <string name="no_available_cameras">There are no cameras available.</string>
 </resources>
