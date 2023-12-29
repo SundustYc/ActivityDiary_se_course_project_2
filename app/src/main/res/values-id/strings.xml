@@ -83,6 +83,9 @@
     <string name="setting_show_cur_activitiy_notification">Pemberitahuan untuk aktivitas saat ini</string>
     <string name="setting_show_cur_activitiy_notification_summary_active">Aktivitas saat ini ditampilkan sebagai pemberitahuan</string>
     <string name="setting_show_cur_activitiy_notification_summary_inactive">Tidak ada pemberitahuan yang ditampilkan untuk aktivitas saat ini</string>
+    <string name="setting_silent_renotification">Silent notifications</string>
+    <string name="setting_silent_reconfication_summary_active">No alert on change of notification text</string>
+    <string name="setting_silent_reconfication_summary_inactive">Agressive alerts (with sound and vibration as configured) on each change of notification text</string>
     <string name="setting_disable_on_click">Terminate activity by click</string>
     <string name="setting_disable_on_click_summary_active">Current activity can be terminated by clicking the activity label</string>
     <string name="setting_disable_on_click_summary_inactive">Current activity can only be terminated by selecting a new one</string>
@@ -144,7 +147,6 @@
     <string name="activity_title_stats">Statistics</string>
     <string name="activity_title_map">Map</string>
     <string name="activity_title_settings">Pengaturan</string>
-    <string name="activity_title_no_selected_act">&lt;Tidak ada Aktivitas&gt;</string>
     <string name="dialog_title_note">Catatan</string>
     <string name="activities">Activities</string>
     <string name="fragment_detail_stats_title">Statistics</string>
@@ -198,9 +200,6 @@
     <string name="renamed_deleted_activity_toast">Mengganti aktivitas %1$s yang sudah dihapus.</string>
     <string name="edit_existing_activity_toast">Sekarang ubah aktivitas dengan nama %1$s.</string>
     <!-- history -->
-    <string name="default_datetime_format">yyyy.MM.dd HH:mm</string>
-    <string name="date_format">yyyy.MM.dd</string>
-    <string name="time_format">HH:mm</string>
     <string name="history_start">Start: %1$s</string>
     <string name="history_end">End: %1$s (%2$s)</string>
     <string name="desc_start_date">Tanggal mulai</string>

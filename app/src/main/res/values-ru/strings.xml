@@ -146,7 +146,6 @@
     <string name="activity_title_stats">Статистика</string>
     <string name="activity_title_map">Карта</string>
     <string name="activity_title_settings">Настройки</string>
-    <string name="activity_title_no_selected_act">&lt;Занятий сейчас нет&gt;</string>
     <string name="dialog_title_note">Заметка</string>
     <string name="activities">Действия</string>
     <string name="fragment_detail_stats_title">Статистика</string>
@@ -212,9 +211,6 @@
     <string name="renamed_deleted_activity_toast">Переименована уже удаленная активность %1$s.</string>
     <string name="edit_existing_activity_toast">Теперь правим уже существующее занятие с именем %1$s.</string>
     <!-- history -->
-    <string name="default_datetime_format">dd.MM.yyyy HH:mm</string>
-    <string name="date_format">dd.MM.yyyy</string>
-    <string name="time_format">HH:mm</string>
     <string name="history_start">Начало: %1$s</string>
     <string name="history_end">Конец: %1$s (%2$s)</string>
     <string name="desc_start_date">Дата начала</string>

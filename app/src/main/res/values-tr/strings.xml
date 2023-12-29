@@ -146,7 +146,6 @@
     <string name="activity_title_stats">İstatistikler</string>
     <string name="activity_title_map">Harita</string>
     <string name="activity_title_settings">Ayarlar</string>
-    <string name="activity_title_no_selected_act">&lt;Etkinlik Yok&gt;</string>
     <string name="dialog_title_note">Not</string>
     <string name="activities">Etkinlikler</string>
     <string name="fragment_detail_stats_title">İstatistikler</string>
@@ -204,9 +203,6 @@
     <string name="renamed_deleted_activity_toast">Silinmiş bulunan %1$s etkinliği yeniden adlandırıldı.</string>
     <string name="edit_existing_activity_toast">Şimdi var olan %1$s adlı etkinlik düzenleniyor.</string>
     <!-- history -->
-    <string name="default_datetime_format">dd.MM.yyyy HH:mm</string>
-    <string name="date_format">dd.MM.yyyy</string>
-    <string name="time_format">HH:mm</string>
     <string name="history_start">Start: %1$s</string>
     <string name="history_end">Bitiş: %1$s (%2$s)</string>
     <string name="desc_start_date">Başlangıç ​​tarihi</string>

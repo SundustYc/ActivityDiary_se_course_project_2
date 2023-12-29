@@ -18,7 +18,7 @@
   ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
   -->
 
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Activity Diary</string>
     <string name="about_text_version">version <b>%1$s</b></string>
     <string name="about_text_intro">A diary for any kind of activities - organize your tasks in agile way and get reminded if something is expected to reoccur.</string>
@@ -198,7 +198,7 @@
     <string name="activity_title_stats">Statistics</string>
     <string name="activity_title_map">Map</string>
     <string name="activity_title_settings">Settings</string>
-    <string name="activity_title_no_selected_act">&lt;No Activity&gt;</string>
+    <string name="activity_title_no_selected_act" translatable="false">&lt;No Activity&gt;</string>
     <string name="dialog_title_note">Note</string>
     <string name="activities">Activities</string>
 
@@ -233,19 +233,19 @@
     <string name="duration_description">Since %1$s</string>
     <string name="just_now">just now</string>
     <string name="few_seconds">a few seconds</string>
-    <plurals name="seconds_short">
+    <plurals name="seconds_short" tools:ignore="MissingTranslation">
         <item quantity="one">%d sec</item>
         <item quantity="other">%d sec</item>
     </plurals>
-    <plurals name="minutes_short">
+    <plurals name="minutes_short" tools:ignore="MissingTranslation">
         <item quantity="one">%d min</item>
         <item quantity="other">%d min</item>
     </plurals>
-    <plurals name="hours_short">
+    <plurals name="hours_short" tools:ignore="MissingTranslation">
         <item quantity="one">%d h</item>
         <item quantity="other">%d h</item>
     </plurals>
-    <plurals name="days">
+    <plurals name="days" tools:ignore="MissingTranslation">
         <item quantity="one">%d Day</item>
         <item quantity="other">%d Days</item>
     </plurals>
@@ -272,17 +272,17 @@
     <string name="edit_existing_activity_toast">Now editing the existing activity with name %1$s.</string>
 
     <!-- history -->
-    <string name="default_datetime_format">yyyy.MM.dd HH:mm</string>
-    <string name="date_format">yyyy.MM.dd</string>
-    <string name="time_format">HH:mm</string>
+    <string name="default_datetime_format" translatable="false">yyyy.MM.dd HH:mm</string>
+    <string name="date_format" translatable="false">yyyy.MM.dd</string>
+    <string name="time_format" translatable="false">HH:mm</string>
     <string name="history_start">Start: %1$s</string>
     <string name="history_end">End: %1$s (%2$s)</string>
     <string name="desc_start_date">Start date</string>
     <string name="desc_start_time">Start time</string>
     <string name="desc_end_date">End date</string>
     <string name="desc_end_time">End time</string>
-    <string name="history_detail_start">Start</string>
-    <string name="history_detail_end">End</string>
+    <string name="history_detail_start" tools:ignore="MissingTranslation">Start</string>
+    <string name="history_detail_end" tools:ignore="MissingTranslation">End</string>
     <string name="adjust_adjacent_times">Adjust adjacent diary entries</string>
     <string name="constraint_positive_duration">The activity shall always start before it ends.</string>
     <string name="search_notes">Search \'%1$s\' in notes&#x2026;</string>
@@ -348,7 +348,8 @@
     <string name="privacy_rights_text">At any time and free of cost you have the right to ask us about which data we store about you. You can always request for correction or removal of personal data or restrict the use of your data.</string>
     <string name="privacy_contact_title">Contact us</string>
     <string name="privacy_contact_text">If you have questions or comments about this Privacy Policy, please contact us at:</string>
-    <string name="privacy_contact_address" translatable="false">Raphael Mack, Joh.-Seb.-Bach-Str. 3, 74321 Bietigheim-Bissingen (Germany)</string>
-    <string name="privacy_contact_email" translatable="false">activity-diary@rampro.de</string>
+    <string name="privacy_contact_address" translatable="false">Sundust/China</string>
+    <string name="privacy_contact_email" translatable="false">SundustYc@outlook.com</string>
+    <string name="no_available_cameras" translatable="false">There are no cameras available.</string>
 
 </resources>

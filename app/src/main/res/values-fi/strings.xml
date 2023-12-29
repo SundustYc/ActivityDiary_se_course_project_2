@@ -146,7 +146,6 @@
     <string name="activity_title_stats">Statistics</string>
     <string name="activity_title_map">Map</string>
     <string name="activity_title_settings">asetukset</string>
-    <string name="activity_title_no_selected_act">&lt;No Activity&gt;</string>
     <string name="dialog_title_note">Huomautus</string>
     <string name="activities">Activities</string>
     <string name="fragment_detail_stats_title">Statistics</string>
@@ -204,9 +203,6 @@
     <string name="renamed_deleted_activity_toast">Nimeä uudelleen jo poistettu toiminta %1$s.</string>
     <string name="edit_existing_activity_toast">Nyt muokataan nykyistä toimintaa nimillä %1$s.</string>
     <!-- history -->
-    <string name="default_datetime_format">yyyy.MM.dd HH: mm</string>
-    <string name="date_format">VVVV.KK.PP</string>
-    <string name="time_format">HH: mm</string>
     <string name="history_start">Start: %1$s</string>
     <string name="history_end">End: %1$s (%2$s)</string>
     <string name="desc_start_date">Aloituspäivämäärä</string>

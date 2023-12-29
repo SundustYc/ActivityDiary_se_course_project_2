@@ -146,7 +146,6 @@
     <string name="activity_title_stats">Statistics</string>
     <string name="activity_title_map">Map</string>
     <string name="activity_title_settings">설정</string>
-    <string name="activity_title_no_selected_act">&lt;No Activity&gt;</string>
     <string name="dialog_title_note">노트</string>
     <string name="activities">Activities</string>
     <string name="fragment_detail_stats_title">Statistics</string>
@@ -200,9 +199,6 @@
     <string name="renamed_deleted_activity_toast">이미 삭제 된 활동의 이름을 %1$s변경했습니다.</string>
     <string name="edit_existing_activity_toast">이제 이름이 %1$s기존 활동을 편집 중입니다.</string>
     <!-- history -->
-    <string name="default_datetime_format">yyyy.MM.dd HH : mm</string>
-    <string name="date_format">yyyy.MM.dd</string>
-    <string name="time_format">HH : mm</string>
     <string name="history_start">Start: %1$s</string>
     <string name="history_end">End: %1$s (%2$s)</string>
     <string name="desc_start_date">시작일</string>

@@ -238,22 +238,26 @@ public class MainActivity extends BaseActivity implements
         });
         // 处理 FAB 上的点击
         fabAttachPicture.setOnClickListener(v -> {
-
-            if(viewModel.currentActivity() != null) {
+            //currentActivity指的就是你当前选择记录的活动
+            //原始代码直接判断currentActivity()是否为null，你前面创建了实例怎么可能null...
+            if(viewModel.currentActivity().getValue()!= null)
+            {
                 Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-
-                if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+                if (takePictureIntent.resolveActivity(getPackageManager()) != null)
+                {
                     File photoFile = null;
-                    try {
+                    try
+                    {
                         photoFile = createImageFile();
                         Log.i(TAG, "create file for image capture " + (photoFile == null ? "" : photoFile.getAbsolutePath()));
-
-                    } catch (IOException ex) {
+                    }
+                    catch (IOException ex)
+                    {
                         // 创建文件时发生错误
                         Toast.makeText(MainActivity.this, getResources().getString(R.string.camera_error), Toast.LENGTH_LONG).show();
                     }
-
-                    if (photoFile != null) {
+                    if (photoFile != null)
+                    {
                         // 仅当文件已成功创建时才继续保存文件,与 ACTION_VIEW 目标一起使用的路径
                         mCurrentPhotoPath = photoFile.getAbsolutePath();
                         Uri photoURI = FileProvider.getUriForFile(MainActivity.this,
@@ -264,7 +268,14 @@ public class MainActivity extends BaseActivity implements
                         startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
                     }
                 }
-            }else{
+                else
+                {
+                    //什么b开发者不写else情况
+                    Toast.makeText(MainActivity.this, getResources().getString(R.string.no_available_cameras), Toast.LENGTH_LONG).show();
+                }
+            }
+            else
+            {
                 Toast.makeText(MainActivity.this, getResources().getString(R.string.no_active_activity_error), Toast.LENGTH_LONG).show();
             }
         });
@@ -299,12 +310,9 @@ public class MainActivity extends BaseActivity implements
         //文件名
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "IMG_";
-        if(viewModel.currentActivity().getValue() != null){
-            imageFileName += viewModel.currentActivity().getValue().getName();
-            imageFileName += "_";
-        }
+        imageFileName += viewModel.currentActivity().getValue().getName();
+        imageFileName += "_";
         imageFileName += timeStamp;
-
         File storageDir;
         //检查是否有存储权限
         int permissionCheck = ContextCompat.checkSelfPermission(ActivityDiaryApplication.getAppContext(),

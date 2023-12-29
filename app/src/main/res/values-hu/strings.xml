@@ -146,7 +146,6 @@
     <string name="activity_title_stats">Statisztika</string>
     <string name="activity_title_map">Térkép</string>
     <string name="activity_title_settings">Beállítások</string>
-    <string name="activity_title_no_selected_act">&lt;No Activity&gt;</string>
     <string name="dialog_title_note">jegyzet</string>
     <string name="activities">Tevékenységek</string>
     <string name="fragment_detail_stats_title">Statisztika</string>
@@ -204,9 +203,6 @@
     <string name="renamed_deleted_activity_toast">Átnevezte a már törölt %1$stevékenységet.</string>
     <string name="edit_existing_activity_toast">Most módosítja a meglévő tevékenységet %1$snévvel.</string>
     <!-- history -->
-    <string name="default_datetime_format">yyyy.MM.dd HH:mm</string>
-    <string name="date_format">yyyy.mm.dd</string>
-    <string name="time_format">HH: mm</string>
     <string name="history_start">Start: %1$s</string>
     <string name="history_end">Vég: %1$s (%2$s)</string>
     <string name="desc_start_date">Kezdő dátum</string>

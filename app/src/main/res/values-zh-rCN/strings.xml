@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ ActivityDiary
+  ~
+  ~ Copyright (C) 2023 Raphael Mack http://www.raphael-mack.de
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<resources>
+    <string name="app_name">Activity Diary</string>
+    <string name="about_text_version">verze <b>%1$s</b></string>
+    <string name="about_text_intro">适用于各种活动的日记，以灵活的方式组织任务，并在预计会再次出现的情况下获得提醒。</string>
+    <string name="about_text_licence_h">许可证</string>
+    <string name="about_text_licence"><![CDATA[%1$s 是自由软件：您可以根据 <a href="https://www.gnu.org/licenses/gpl-3.0.en.html">GNU 通用公共许可证</a>]]> 的条款重新发布和/或修改它。</string>
+    <string name="about_text_license_2">发布本程序是希望其有用，但不附带任何保证；甚至不附带适销性或特定用途适用性的默示保证。更多详情，请参阅 GNU 通用公共许可证。</string>
+    <string name="about_text_privacy_h">隐私政策</string>
+    <string name="about_text_privacy"><![CDATA[%1$s 及其作者非常重视尊重您的隐私。本应用程序的性质是跟踪和存储您的活动以及您在哪里和如何进行这些活动。不过，您的数据由您自己掌握，未经您的明确请求，应用程序不会将其传输到任何服务器或外部机构。阅读隐私政策 <a href=\"de.rampro.activitydiary.privacy_policy://show\"></a>.]]></string>
+    <string name="about_text_contact_h">联系</string>
+    <string name="about_text_contact"><![CDATA[有关错误和建议，请使用 <a href="https://github.com/ramack/ActivityDiary/issues">问题跟踪器</a>，最好使用英语]]>。</string>
+    <string name="about_text_contact_2"><![CDATA[源代码可在 <a href="https://github.com/ramack/ActivityDiary"> </a> 和 <a href="https://github.com/SundustYc/ActivityDiary_se_course_project_2"> </a>上找到。]]></string>
+    <string name="about_text_support_h">Support</string>
+    <string name="about_text_support"><![CDATA[如果您想支持 %1$s consider discussing <a href="https://github.com/ramack/ActivityDiary/issues">issues on github</a>, translating on <a href="https://crowdin.com/project/activitydiary">crowdin</a> or donation on <a href="https://liberapay.com/ActivityDiary/">Liberapay</a>.]]></string>
+    <string name="about_text_cont_h">贡献者</string>
+    <string name="about_text_cont_2">我们也期待在这份名单中提到您的名字。</string>
+    <string name="about_text_lib_h">Libraries\n</string>
+    <string name="about_text_lib">本应用程序使用下列库，并根据指定的许可证进行授权：</string>
+    <string name="unsupported_on_api_level">您的 Android 版本不支持此功能。需要最低 API 级别 %1$d.</string>
+    <string name="nav_main">选择活动</string>
+    <string name="nav_diary">记录</string>
+    <string name="nav_stats">统计</string>
+    <string name="nav_map">Map</string>
+    <string name="nav_add_activity">添加活动</string>
+    <string name="nav_show_deleted">显示已删除</string>
+    <string name="nav_hide_deleted">隐藏已删除</string>
+    <string name="nav_activity_manager">编辑活动</string>
+    <string name="nav_settings">设置</string>
+    <string name="nav_about">关于</string>
+    <string name="desc_activity_color">活动颜色</string>
+    <string name="perm_write_external_storage_xplain">存储照片需要获得许可 &#8230;</string>
+    <string name="desc_activity_hint">活动标题</string>
+    <string name="desc_activity_select">选择当前活动&#8230;</string>
+    <string name="activity_image_description">活动图片</string>
+    <string name="contentDesc_logo">ActivityDiary的Logo</string>
+    <string name="drawer_close">关闭导览</string>
+    <string name="drawer_open">打开导览</string>
+    <string name="notif_channel_current_activity_name">当前活动</string>
+    <string name="notif_channel_current_activity_desc">显示当前活动的通知</string>
+    <string name="setting_view_category">View</string>
+    <string name="setting_behavior_category">Behavior</string>
+    <string name="setting_location_category">位置</string>
+    <string name="setting_images_category">图像</string>
+    <string name="setting_backup_category">备份</string>
+    <string name="setting_condition_category">Conditions</string>
+    <string name="setting_datetime_format">数据格式</string>
+    <string name="setting_datetime_format_summary">\@string/default_datetime_format</string>
+    <string name="setting_datetime_format_description">活动开始日期和时间的显示格式。通常的格式是 yyyy-MM-dd HH:mm 或 dd.MM.</string>
+    <string name="setting_duration_format">Duration格式</string>
+    <string name="setting_duration_format_summary_dynamic">根据持续时间动态调整格式。</string>
+    <string name="setting_duration_format_summary_precise">始终以秒为分辨率显示持续时间。</string>
+    <string name="setting_duration_format_summary_nodays">以秒为分辨率显示持续时间，但不要用 1 天代替 24 小时。</string>
+    <string name="setting_duration_format_summary_hour_min">始终以小时和分钟显示持续时间。</string>
+    <string name="setting_duration_format_description">时间长度的显示格式。</string>
+    <string name="setting_auto_select_new">选择新活动</string>
+    <string name="setting_auto_select_new_summary_active">新创建的活动会直接被选为新的活动</string>
+    <string name="setting_auto_select_new_summary_inactive">创建新活动不影响当前活动</string>
+    <string name="setting_show_cur_activitiy_notification">当前活动通知</string>
+    <string name="setting_show_cur_activitiy_notification_summary_active">当前活动显示为通知</string>
+    <string name="setting_show_cur_activitiy_notification_summary_inactive">不显示当前活动的通知</string>
+    <string name="setting_silent_renotification">静默通知</string>
+    <string name="setting_silent_reconfication_summary_active">更改通知文本时没有提示</string>
+    <string name="setting_silent_reconfication_summary_inactive">每次更改通知文本时都会发出强烈的警报（根据配置提供声音和振动</string>
+    <string name="setting_disable_on_click">点击终止活动</string>
+    <string name="setting_disable_on_click_summary_active">点击活动标签可终止当前活动</string>
+    <string name="setting_disable_on_click_summary_inactive">只有选择新活动才能终止当前活动</string>
+    <string name="setting_acra_enabled">发送崩溃报告</string>
+    <string name="setting_enable_acra">崩溃报告</string>
+    <string name="setting_acra_disabled">不要发送崩溃报告</string>
+    <string name="setting_use_location">位置服务</string>
+    <string name="setting_use_location_summary">用于跟踪设备位置的 %1$s</string>
+    <string name="setting_use_location_off_summary">完全不跟踪用户位置</string>
+    <string name="perm_location_xplain">跟踪位置的配置选项需要获得访问设备位置的许可&#8230;</string>
+    <string name="setting_storage_folder">图片存储文件夹</string>
+    <string name="setting_storage_folder_summary">将活动照片存储在 %1$s 目录中</string>
+    <string name="setting_storage_folder_description">存储活动照片的目录</string>
+    <string name="default_storage_folder">ActivityDiary</string>
+    <string name="setting_tag_images">Metadata</string>
+    <string name="setting_tag_yes">将当前活动写入 EXIF 标签 新图像的用户评论</string>
+    <string name="setting_tag_no">请勿触摸新图像的 EXIF 标记</string>
+    <string name="pref_cond_off">OFF</string>
+    <string name="setting_cond_alpha">按字母排序</string>
+    <string name="setting_cond_alpha_summary">按字母排序对建议的下一项活动的权重为 %1$s</string>
+    <string name="setting_cond_alpha_not_used_summary">按字母排序不用于建议下一项活动</string>
+    <string name="setting_cond_predecessor">活动顺序</string>
+    <string name="setting_cond_predecessor_summary">日记中的活动序列对建议的下一个活动的权重为 %1$s</string>
+    <string name="setting_cond_predecessor_not_used_summary">日记中的活动顺序不用于建议下一步活动</string>
+    <string name="setting_cond_paused">活动中断</string>
+    <string name="setting_cond_paused_summary">刚刚停止的活动在建议的下一个活动中的权重为 %1$s</string>
+    <string name="setting_cond_paused_not_used_summary">刚刚停止的活动不用于建议下一个活动</string>
+    <string name="setting_cond_occurrence">活动发生</string>
+    <string name="setting_cond_occurrence_summary">日记中的活动频率对建议的下一项活动的权重为 %1$s</string>
+    <string name="setting_cond_occurrence_not_used_summary">日记中的活动频率不用于建议下一次活动</string>
+    <string name="setting_cond_daytime">Daytime</string>
+    <string name="setting_cond_daytime_summary">日记中活动的 DayTime 对建议的下一个活动的权重为 %1$s</string>
+    <string name="setting_cond_daytime_not_used_summary">日记中活动的 Daytime 不用于建议下一次活动</string>
+    <string name="pref_location_age">请求每 %1$s 分钟更新一次位置</string>
+    <string name="setting_location_age">更新时间</string>
+    <string name="pref_location_dist">要求每隔 %1$s 米更新一次位置</string>
+    <string name="setting_location_dist">更新距离</string>
+    <string name="setting_expert">专业设置</string>
+    <string name="setting_export">导出数据库</string>
+    <string name="setting_import">导入数据库</string>
+    <string name="setting_export_summary">在文件中存储当前数据库的副本，以便备份</string>
+    <string name="setting_import_summary">将备份文件恢复到当前数据库</string>
+    <string name="db_export_error">导出数据库到 %1$s 失败</string>
+    <string name="db_export_success">将数据库导出到 %1$s</string>
+    <string name="db_export_name_suggestion">ActivityDiary_Export</string>
+    <string name="db_export_selection">选择要导出的文件</string>
+    <string name="db_import_error">导入 %1$s 失败</string>
+    <string name="db_import_success">成功导入 %1$s</string>
+    <string name="db_import_selection">选择要导入的文件</string>
+    <string name="activity_title_edit">编辑</string>
+    <string name="activity_title_edit_new">新活动</string>
+    <string name="activity_title_manage_activities">管理活动</string>
+    <string name="activity_title_history">Diary</string>
+    <string name="activity_subtitle_main">？你在干什么</string>
+    <string name="activity_title_about">About</string>
+    <string name="activity_title_stats">统计</string>
+    <string name="activity_title_map">Map</string>
+    <string name="activity_title_settings">设置</string>
+    <string name="dialog_title_note">Note</string>
+    <string name="activities">活动</string>
+    <string name="fragment_detail_stats_title">统计</string>
+    <string name="fragment_detail_note_title">Note</string>
+    <string name="fragment_detail_pictures_title">图片</string>
+    <string name="action_delete">删除活动</string>
+    <string name="action_diary_entry_delete">删除条目</string>
+    <string name="activity_title_history_detail">Diary条目</string>
+    <string name="action_store">保存</string>
+    <string name="action_filter">筛选</string>
+    <string name="action_undo">UNDO</string>
+    <string name="search_hint">搜索活动&#8230;</string>
+    <string name="search_description">ActivityDiary中的条目</string>
+    <string name="dlg_ok">OK</string>
+    <string name="dlg_cancel">Cancel</string>
+    <string name="dlg_delete_image_title">确认删除</string>
+    <string name="dlg_delete_image_text">您确定要从当前活动条目中删除此图片吗？</string>
+    <string name="dlg_undelete_activity_title">恢复活动</string>
+    <string name="dlg_undelete_activity_text">活动 %1$s 是否应恢复并重新可用？</string>
+    <string name="statistics_others">Others</string>
+    <string name="duration_description">Since %1$s</string>
+    <string name="just_now">just now</string>
+    <string name="few_seconds">a few seconds</string>
+    <string name="avg_duration_description">Average duration: %1$s</string>
+    <string name="last_done_description">Last start: %1$s</string>
+    <string name="camera_error">出错了。无法存储图像。</string>
+    <string name="no_active_activity_error">要执行此操作，必须先选择一项活动</string>
+    <string name="contentDesc_pictureEntry">为diary条目指定图片</string>
+    <string name="error_name_already_used">名称为 %1$s 的活动已存在</string>
+    <string name="tooltip_quickfix_btn_edit_existing">拒绝当前编辑并打开同名的现有活动</string>
+    <string name="error_name_already_used_in_deleted">名称为 %1$s 的已删除活动已经存在</string>
+    <string name="tooltip_quickfix_btn_rename_deleted">用相同的名称重命名已删除的活动，以解决冲突问题</string>
+    <string name="tooltip_quickfix_btn_undelete_existing">取消删除同名活动</string>
+    <string name="error_name_similar">与 %1$s 相似的新活动名称</string>
+    <string name="recover_activity_toast">已恢复活动 %1$s。现在可以重新选择。</string>
+    <string name="renamed_deleted_activity_toast">重命名已删除的活动 %1$s。</string>
+    <string name="edit_existing_activity_toast">现在编辑名称为 %1$s 的现有活动。</string>
+    <string name="desc_start_date">Start date</string>
+    <string name="desc_start_time">Start time</string>
+    <string name="desc_end_date">End date</string>
+    <string name="history_start">Start: %1$s</string>
+    <string name="history_end">End: %1$s (%2$s)</string>
+    <string name="desc_end_time">End time</string>
+    <string name="history_detail_start">Start</string>
+    <string name="history_detail_end">End</string>
+    <string name="adjust_adjacent_times">调整相邻的日记条目</string>
+    <string name="constraint_positive_duration">活动总是在结束之前开始。</string>
+    <string name="search_notes">在备注中搜索\'%1$s\'&#x2026;</string>
+    <string name="search_diary">globally搜索\'%1$s\'&#x2026;</string>
+    <string name="wrongFormat">请以正确格式输入日期！</string>
+    <string name="no_map_data_message">无数据显示。在设置中启用定位服务。</string>
+    <string name="earlier">earlier</string>
+    <string name="later">later</string>
+    <string name="day_format">E, M.dd.yy</string>
+    <string name="week_format">yyyy \'Week\' ww</string>
+    <string name="month_format">MMMM yyyy</string>
+    <string name="year_format">yyyy</string>
+    <string name="yesterday">昨天</string>
+    <string name="today">今天</string>
+    <string name="lastWeek">上周</string>
+    <string name="search_date">在日期 \'&#x2026; 中搜索\'%1$s';</string>
+    <string name="crash_dialog_text">发生意外错误，应用程序被迫停止。请发送错误数据，帮助我们修复错误，您只需点击 \"OK \"即可。</string>
+    <string name="crash_dialog_comment_prompt">您可以在下面添加对该问题的评论：</string>
+    <string name="crash_dialog_ok_toast">谢谢。请在审阅内容后发送准备好的电子邮件。</string>
+    <string name="privacy_text">ActivityDiary 是一款免费、自由和开源的应用程序，用于跟踪您的活动。本隐私政策适用于本 Android 应用程序，并说明 ActivityDiary 存储和处理哪些数据。</string>
+    <string name="privacy_last_update">最后更新时间：2018 年 12 月 22 日</string>
+    <string name="privacy_intro_title">Introduction</string>
+    <string name="privacy_intro_text1">ActivityDiary 的开发者，我们（或称 \"我们 \"或 \"我们的\"）尊重用户（或称 \"用户 \"或 \"您\"）的隐私。由于本应用程序的目的是记录您的活动，因此会收集和存储大量敏感的个人信息。尽管如此，这些都是您的数据，您对其拥有完全控制权。本隐私政策解释 ActivityDiary 应用程序（\"应用程序\"）如何收集、使用、披露和保护您的信息。我们的名称可从 git 仓库和应用程序内的元数据中提取。</string>
+    <string name="privacy_intro_text2">请仔细阅读本隐私政策。如果您不同意本隐私政策的条款，请不要访问应用程序，并将其从您的设备中删除。</string>
+    <string name="privacy_intro_text3">我们保留随时以任何理由更改本隐私政策的权利。我们将通过更新本隐私政策的 \"最后更新 \"日期来提醒您注意任何变更。</string>
+    <string name="privacy_intro_text4">我们鼓励您定期查看本隐私政策，以便随时了解更新情况。在任何经修订的隐私政策发布之日之后，如果您继续使用应用程序，则将被视为您已知晓、受其约束，并被视为您已接受经修订的隐私政策中的变更。</string>
+    <string name="privacy_intro_text5">本隐私政策不适用于您安装应用程序或进行支付的第三方在线/移动商店，它们也可能收集和使用您的相关数据。我们对任何此类第三方收集的任何数据概不负责。</string>
+    <string name="privacy_what_title">处理和存储哪些数据？</string>
+    <string name="privacy_what_subTitle1">活动数据</string>
+    <string name="privacy_what_subText1a">您为记录活动而输入的数据，包括活动开始和结束的日期和时间，以及格式、备注、图片和不同活动之间的关系，都会被存储起来。删除活动或图片等条目并不会将它们从数据库中完全删除，而只是将它们隐藏起来。</string>
+    <string name="privacy_what_subTitle2">地理位置信息（ACCESS_FINE_LOCATION，GPS）</string>
+    <string name="privacy_what_subText2a">如果进行了配置，应用程序会访问您移动设备上的位置信息，将活动与位置联系起来，并根据位置信息提供活动建议。如果您希望更改 ActivityDiary 的访问权限，可以在设备设置中进行更改，或者在应用程序设置中禁用位置服务。请注意，这不会影响或删除已经收集的位置数据。</string>
+    <string name="privacy_what_subTitle3">设备存储(WRITE_EXTERNAL_STORAGE)</string>
+    <string name="privacy_what_subText3a">存储和恢复备份、照片和其他附加到活动日记的文件，需要访问 Android 的外部存储/SD 卡。</string>
+    <string name="privacy_what_subText4a">通过该应用程序，您可以使用设备的摄像头拍照，并将照片附加到活动日记中。这是相机权限的唯一用途。</string>
+    <string name="privacy_what_subTitle4">相机</string>
+    <string name="privacy_what_subTitle5">网络状态（ACCESS_NETWORK_STATE、ACCESS_WIFI_STATE）</string>
+    <string name="privacy_what_subText5a">存储网络和 WIFI 状态，以便将活动与这些数据关联起来，并根据当前状态建议和设置下一个活动。</string>
+    <string name="privacy_what_subTitle6">崩溃报告</string>
+    <string name="privacy_what_subText6a">在程序发生故障（崩溃）时，应用程序会编写一份报告，帮助我们改进应用程序的行为。该报告包含大量有关设备和操作系统的技术数据、应用程序的完整偏好设置以及崩溃前的程序步骤跟踪。您设备的硬件（包括但不限于屏幕尺寸和分辨率）、制造商、语言设置以及操作系统和应用程序的版本均可识别。准备好的报告不会自动传输，而是通过新编写的电子邮件共享到您的电子邮件应用程序中，您可以根据自己的意愿将其发送给我们或您想发送给的任何人。您和您的邮件服务提供商有责任在传输过程中使用加密邮件传输来保护数据。我们强烈建议您仔细阅读报告，删除所有您不理解和/或不想分享的数据。</string>
+    <string name="privacy_what_subText6b">由于使用的媒体是电子邮件，因此您在发送碰撞报告时会披露您的姓名、电子邮件地址以及其他一些技术数据，如 IP 地址和电子邮件服务提供商。除了与您联系，我们不会将这些信息用于其他用途。</string>
+    <string name="privacy_what_subText6c">报告中不允许透露您身份的匿名摘要可能会用于公共问题跟踪器，以记录崩溃情况并跟踪返工情况。</string>
+    <string name="privacy_what_subText6d">除应用程序编写的报告外，您设备上的操作系统或服务可能会传输崩溃或使用报告，但这些报告不属于 ActivityDiary 的一部分，不在本隐私政策的涵盖范围内，由您自行负责。</string>
+    <string name="privacy_why_title">应用程序为什么要存储数据？</string>
+    <string name="privacy_why_text1">应用程序旨在为您的活动创建记录。根据对您输入的数据或设备收集的数据的评估，通过手动或自动选择当前活动来实现这一目的。您输入应用程序的数据将被储存起来，供用户日后检索。应用程序会存储和评估设备不同传感器的数据，以建议甚至自动选择下一项活动。不会收集、传输或存储任何非预期功能所需的数据。</string>
+    <string name="privacy_why_text2">使用本应用程序时，您的个人信息将在您的设备上进行本地存储和评估，未经您明确请求，不会传输给任何组织或公司。</string>
+    <string name="privacy_why_text3">可以通过删除应用程序、删除您创建的备份和设备的备份机制来删除存储的数据。</string>
+    <string name="privacy_how_title">如何保护数据？</string>
+    <string name="privacy_how_text1">应用程序将未加密的数据存储在其执行设备的本地。您有责任保护存储的数据免遭未经授权的访问。我们强烈建议您使用强密码保护设备，甚至对设备存储进行加密。应用程序本身创建的备份或任何设备备份机制也需要您以类似方式加以保护。</string>
+    <string name="privacy_security_title">您的信息安全</string>
+    <string name="privacy_security_text">我们使用 Android 框架提供的机制来保护您的个人信息不受您设备上其他应用程序的影响。虽然我们已采取合理措施保护您提供给我们的个人信息的安全，但请注意，尽管我们做出了努力，但没有任何安全措施是完美无缺或坚不可摧的，也没有任何数据保护方法可以保证不被截取或其他类型的滥用。因此，我们无法保证您提供的个人信息绝对安全。</string>
+    <string name="privacy_rights_title">您的权利</string>
+    <string name="privacy_rights_text">您有权随时免费向我们询问我们储存了哪些有关您的数据。您可以随时要求更正或删除个人数据，或限制使用您的数据。</string>
+    <string name="privacy_contact_title">联系我们</string>
+    <string name="privacy_contact_text">如果您对本隐私政策有任何疑问或意见，请通过以下方式联系我们：</string>
+    <string name="no_available_cameras">相机不可用</string>
+</resources>

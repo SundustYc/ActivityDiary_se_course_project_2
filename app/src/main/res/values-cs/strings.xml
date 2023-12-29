@@ -146,7 +146,6 @@
     <string name="activity_title_stats">Statistics</string>
     <string name="activity_title_map">Map</string>
     <string name="activity_title_settings">Nastavení</string>
-    <string name="activity_title_no_selected_act">&lt;No Activity&gt;</string>
     <string name="dialog_title_note">Poznámka</string>
     <string name="activities">Activities</string>
     <string name="fragment_detail_stats_title">Statistics</string>
@@ -212,9 +211,6 @@
     <string name="renamed_deleted_activity_toast">Přejmenování již smazané aktivity %1$s.</string>
     <string name="edit_existing_activity_toast">Nyní upravíte existující aktivitu s názvem %1$s.</string>
     <!-- history -->
-    <string name="default_datetime_format">yyyy.MM.dd HH: mm</string>
-    <string name="date_format">yyyy.MM.dd</string>
-    <string name="time_format">HH: mm</string>
     <string name="history_start">Start: %1$s</string>
     <string name="history_end">End: %1$s (%2$s)</string>
     <string name="desc_start_date">Datum zahájení</string>

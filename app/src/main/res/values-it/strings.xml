@@ -146,7 +146,6 @@
     <string name="activity_title_stats">Statistiche</string>
     <string name="activity_title_map">Mappa</string>
     <string name="activity_title_settings">Impostazioni</string>
-    <string name="activity_title_no_selected_act">&lt;Nessuna attività&gt;</string>
     <string name="dialog_title_note">Nota</string>
     <string name="activities">Attività</string>
     <string name="fragment_detail_stats_title">Statistiche</string>
@@ -204,9 +203,6 @@
     <string name="renamed_deleted_activity_toast">Rinominata l\'attività già cancellata %1$s.</string>
     <string name="edit_existing_activity_toast">Ora modifica l\'attività esistente con il nome %1$s.</string>
     <!-- history -->
-    <string name="default_datetime_format">yyy.MM.dd HH:mm</string>
-    <string name="date_format">dd/MM/yyy</string>
-    <string name="time_format">HH:mm</string>
     <string name="history_start">Inizio: %1$s</string>
     <string name="history_end">Fine: %1$s (%2$s)</string>
     <string name="desc_start_date">Data d\'inizio</string>
