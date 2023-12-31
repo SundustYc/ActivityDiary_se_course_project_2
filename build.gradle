@@ -21,6 +21,9 @@
 
 buildscript {
     repositories {
+        maven {
+            url 'https://maven.aliyun.com/repository/public/'
+        }
         google()
         mavenCentral()
         if (project.file('ActivityDiarySigning.properties').exists()) {
@@ -44,6 +47,9 @@ allprojects {
     }
 
     repositories {
+        maven {
+            url 'https://maven.aliyun.com/repository/public/'
+        }
         google()
         mavenCentral()
         jcenter()

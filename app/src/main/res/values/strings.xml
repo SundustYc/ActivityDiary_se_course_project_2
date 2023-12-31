@@ -55,7 +55,7 @@
         <p><a href="http://square.github.io/picasso/">Picasso</a>, license <a href="http://www.apache.org/licenses/LICENSE-2.0">APACHE-2.0</a></p>
         <p>appcompat, cardview, constraint-layout, recyclerview, material, preference, exifinterface, lifecycle license <a href="http://www.apache.org/licenses/LICENSE-2.0">APACHE-2.0</a></p>
         ]]></string>
-    <string name="perm_write_external_storage_xplain">Storing photos requires permission to do so &#8230;</string>
+    <string name="perm_write_external_storage_xplain">Storing photos/audio/video requires permission to do so &#8230;</string>
 
     <string name="unsupported_on_api_level">This feature is not supported on your Android Version. Minimum API level %1$d required.</string>
     <!-- Navigation Drawer Menu -->
@@ -351,5 +351,7 @@
     <string name="privacy_contact_address" translatable="false">Sundust/China</string>
     <string name="privacy_contact_email" translatable="false">SundustYc@outlook.com</string>
     <string name="no_available_cameras">There are no cameras available.</string>
+    <string name="video_error" translatable="false">video error</string>
+    <string name="audio_error" translatable="false">audio error</string>
 
 </resources>

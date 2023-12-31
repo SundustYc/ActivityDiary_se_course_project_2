@@ -19,21 +19,15 @@
 
 package de.rampro.activitydiary.helpers;
 
-import android.Manifest;
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Build;
-import android.os.Environment;
-import androidx.exifinterface.media.ExifInterface;
-import androidx.core.content.ContextCompat;
-import androidx.core.graphics.ColorUtils;
-import androidx.preference.PreferenceManager;
 import android.util.Log;
 
-import java.io.File;
+import androidx.core.graphics.ColorUtils;
+import androidx.exifinterface.media.ExifInterface;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -42,93 +36,12 @@ import java.util.List;
 import de.rampro.activitydiary.ActivityDiaryApplication;
 import de.rampro.activitydiary.R;
 import de.rampro.activitydiary.model.DiaryActivity;
-import de.rampro.activitydiary.ui.settings.SettingsActivity;
 
 public class GraphicsHelper {
     public static final String TAG = "GraphicsHelper";
 
     /* list if recommended colors for new activites, populated from resources on startup */
     public static ArrayList<Integer> activityColorPalette = new ArrayList<Integer>(19);
-
-    /* Checks if external storage is available for read and write */
-    public static boolean isExternalStorageWritable()
-    {
-        String state = Environment.getExternalStorageState();
-        if (Environment.MEDIA_MOUNTED.equals(state))
-        {
-            return true;
-        }
-        return false;
-    }
-
-    public static File imageStorageDirectory()
-    {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(ActivityDiaryApplication.getAppContext());
-        File directory;
-
-        if(isExternalStorageWritable())
-        {
-            directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-        }
-        else
-        {
-            directory = ActivityDiaryApplication.getAppContext().getFilesDir();
-        }
-
-        File root = new File(directory,
-                sharedPreferences.getString(SettingsActivity.KEY_PREF_STORAGE_FOLDER, "ActivityDiary"));
-
-        int permissionCheck = ContextCompat.checkSelfPermission(ActivityDiaryApplication.getAppContext(),
-                Manifest.permission.WRITE_EXTERNAL_STORAGE);
-
-        if (permissionCheck == PackageManager.PERMISSION_GRANTED) {
-            if (!root.exists()) {
-                if (!root.mkdirs()) {
-                    Log.e(TAG, "failed to create directory");
-                    throw new RuntimeException("failed to create directory " + root.toString());
-                }
-            }
-        }
-        else {
-            /* no permission, return null */
-        }
-        return root;
-    }
-
-    public static File audioStorageDirectory()
-    {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(ActivityDiaryApplication.getAppContext());
-        File directory;
-
-        if(isExternalStorageWritable()) {
-            directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC);
-        }else {
-            directory = ActivityDiaryApplication.getAppContext().getFilesDir();
-        }
-
-        File root = new File(directory,
-                sharedPreferences.getString(SettingsActivity.KEY_PREF_STORAGE_FOLDER, "ActivityAudio"));
-
-        int permissionCheck = ContextCompat.checkSelfPermission(ActivityDiaryApplication.getAppContext(),
-                Manifest.permission.WRITE_EXTERNAL_STORAGE);
-
-        if (permissionCheck == PackageManager.PERMISSION_GRANTED)
-        {
-            if (!root.exists())
-            {
-                if (!root.mkdirs())
-                {
-                    Log.e(TAG, "failed to create directory");
-                    throw new RuntimeException("failed to create directory " + root.toString());
-                }
-            }
-        }
-        else {
-            /* no permission, return null */
-        }
-        return root;
-    }
-
 
     /**
      * return the rotation of the image at uri from the exif data

@@ -28,6 +28,7 @@ import de.rampro.activitydiary.db.ActivityDiaryContract;
 
 /* the viewmodel for the details of a diary entry */
 public class DetailViewModel extends ViewModel {
+
     public MutableLiveData<String> mNote;
     public MutableLiveData<String> mDuration;
     public MutableLiveData<String> mAvgDuration;

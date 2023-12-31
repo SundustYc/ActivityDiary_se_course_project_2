@@ -24,13 +24,15 @@
     <uses-feature android:name="android.hardware.camera"
         android:required="false" />
 
-    <!-- for photo storage -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         android:required="false" />
-
+    <uses-feature android:name="android.hardware.camera" android:required="false" />
+    <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"
         android:required="false" />
 
+    <uses-permission android:name="android.permission.RECORD_AUDIO"
+        android:required="false" />
 
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"
         android:required="false" />
@@ -113,7 +115,7 @@
             />
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="${applicationId}.fileprovider"
+            android:authorities="de.rampro.activitydiary.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data

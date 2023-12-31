@@ -47,7 +47,7 @@
     <string name="nav_settings">设置</string>
     <string name="nav_about">关于</string>
     <string name="desc_activity_color">活动颜色</string>
-    <string name="perm_write_external_storage_xplain">存储照片需要获得许可 &#8230;</string>
+    <string name="perm_write_external_storage_xplain">存储照片/录音/视频需要获得许可 &#8230;</string>
     <string name="desc_activity_hint">活动标题</string>
     <string name="desc_activity_select">选择当前活动&#8230;</string>
     <string name="activity_image_description">活动图片</string>
@@ -133,7 +133,7 @@
     <string name="activity_title_edit_new">新活动</string>
     <string name="activity_title_manage_activities">管理活动</string>
     <string name="activity_title_history">Diary</string>
-    <string name="activity_subtitle_main">？你在干什么</string>
+    <string name="activity_subtitle_main">我永远喜欢ActivityDiary...吗?</string>
     <string name="activity_title_about">About</string>
     <string name="activity_title_stats">统计</string>
     <string name="activity_title_map">Map</string>

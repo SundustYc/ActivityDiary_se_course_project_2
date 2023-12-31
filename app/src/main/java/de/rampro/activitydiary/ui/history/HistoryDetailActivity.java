@@ -27,7 +27,9 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.AbstractCursor;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import com.google.android.material.textfield.TextInputLayout;
 import androidx.fragment.app.DialogFragment;
@@ -36,6 +38,7 @@ import androidx.loader.content.CursorLoader;
 import androidx.loader.content.Loader;
 import androidx.preference.PreferenceManager;
 import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import android.text.Editable;
@@ -54,6 +57,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import java.util.Calendar;
+import java.util.List;
 
 import de.rampro.activitydiary.ActivityDiaryApplication;
 import de.rampro.activitydiary.R;
@@ -61,6 +65,8 @@ import de.rampro.activitydiary.db.ActivityDiaryContract;
 import de.rampro.activitydiary.helpers.ActivityHelper;
 import de.rampro.activitydiary.ui.generic.BaseActivity;
 import de.rampro.activitydiary.ui.generic.DetailRecyclerViewAdapter;
+import de.rampro.activitydiary.db.VideoDb;
+import de.rampro.activitydiary.ui.generic.VideoAdapter;
 
 /*
  * HistoryDetailActivity to show details of and modify diary entries
@@ -83,6 +89,7 @@ public class HistoryDetailActivity extends BaseActivity implements LoaderManager
     private boolean mUpdatePending[] = new boolean[UPDATE_SUCC + 1];
     private final int OVERLAP_CHECK = 5;
 
+    private VideoDb videoDb;
 
     private final String[] ENTRY_PROJ = new String[]{
             ActivityDiaryContract.DiaryActivity.TABLE_NAME + "." + ActivityDiaryContract.DiaryActivity.NAME,
@@ -197,7 +204,7 @@ public class HistoryDetailActivity extends BaseActivity implements LoaderManager
                         if(diaryEntryID == -1){
                             diaryEntryID = cursor.getLong(cursor.getColumnIndex(ActivityDiaryContract.Diary._ID));
                         }
-                        overrideUpdates();
+
                     }
                 }
                 cursor.close();
@@ -259,7 +266,6 @@ public class HistoryDetailActivity extends BaseActivity implements LoaderManager
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         Intent i = getIntent();
         diaryEntryID = i.getIntExtra("diaryEntryID", -1);
@@ -302,6 +308,7 @@ public class HistoryDetailActivity extends BaseActivity implements LoaderManager
         end = Calendar.getInstance();
         mTimeError = (TextView) contentView.findViewById(R.id.time_error);
 
+
         detailRecyclerView = (RecyclerView)findViewById(R.id.picture_recycler);
         RecyclerView.LayoutManager layoutMan = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
         detailRecyclerView.setLayoutManager(layoutMan);
@@ -340,6 +347,18 @@ public class HistoryDetailActivity extends BaseActivity implements LoaderManager
 
         mDrawerToggle.setDrawerIndicatorEnabled(false);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_close_cancel);
+
+        videoDb = new VideoDb(this);
+        List<Uri> videoUris = videoDb.getVideos(Long.toString(diaryEntryID));
+        try {
+            RecyclerView recyclerView = findViewById(R.id.video_recycler);
+            LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+            recyclerView.setLayoutManager(layoutManager);
+            VideoAdapter videoAdapter = new VideoAdapter(videoUris, this);
+            recyclerView.setAdapter(videoAdapter);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     @Override

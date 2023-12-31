@@ -1,8 +1,7 @@
-<?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ ActivityDiary
   ~
-  ~ Copyright (C) 2017 Raphael Mack http://www.raphael-mack.de
+  ~ Copyright (C) 2023 Raphael Mack http://www.raphael-mack.de
   ~
   ~ This program is free software: you can redistribute it and/or modify
   ~ it under the terms of the GNU General Public License as published by
@@ -18,10 +17,19 @@
   ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
   -->
 
-<paths xmlns:android="http://schemas.android.com/apk/res/android">
-    <external-path name="public_images" path="Pictures" />
-    <external-path name="public_videos" path="Movies" />
-    <files-path name="private_images" path="/" />
-    <files-path name="private_videos" path="/" />
+<!-- res/layout/item_video.xml -->
 
-</paths>
+<FrameLayout
+xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="150dp"
+android:layout_height="200dp">
+
+    <ImageView
+        android:id="@+id/videoThumbnail"
+        android:layout_width="130dp"
+        android:layout_height="180dp"
+        android:layout_gravity="center" />
+
+</FrameLayout>
+
+

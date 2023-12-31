@@ -1,5 +1,7 @@
 package de.rampro.activitydiary.ui.main;
 
+
+
 import android.Manifest;
 import android.app.SearchManager;
 import android.content.AsyncQueryHandler;
@@ -66,14 +68,16 @@ import de.rampro.activitydiary.db.ActivityDiaryContract;
 import de.rampro.activitydiary.helpers.ActivityHelper;
 import de.rampro.activitydiary.helpers.DateHelper;
 import de.rampro.activitydiary.helpers.GraphicsHelper;
+import de.rampro.activitydiary.helpers.ImageRecordHelper;
 import de.rampro.activitydiary.helpers.TimeSpanFormatter;
+import de.rampro.activitydiary.helpers.VideoRecordHelper;
 import de.rampro.activitydiary.model.DetailViewModel;
 import de.rampro.activitydiary.model.DiaryActivity;
 import de.rampro.activitydiary.ui.generic.BaseActivity;
 import de.rampro.activitydiary.ui.generic.EditActivity;
 import de.rampro.activitydiary.ui.history.HistoryDetailActivity;
 import de.rampro.activitydiary.ui.settings.SettingsActivity;
-
+import de.rampro.activitydiary.db.VideoDb;
 
 public class MainActivity extends BaseActivity implements
         SelectRecyclerViewAdapter.SelectListener,
@@ -90,6 +94,7 @@ public class MainActivity extends BaseActivity implements
     //在日志输出或调试信息中标识出相关类的名称
 
     private static final int REQUEST_IMAGE_CAPTURE = 1; //图片请求
+    private static final int REQUEST_VIDEO_CAPTURE = 2;
 
     private static final int PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 4711;//存储权限
 
@@ -98,6 +103,8 @@ public class MainActivity extends BaseActivity implements
     //活动的统计
     private DetailViewModel viewModel;//详细信息的视图模型
     private String mCurrentPhotoPath;//当前图片的路径
+
+    private String mCurrentVideoPath;
     private RecyclerView selectRecyclerView;//选择的视图
     private StaggeredGridLayoutManager selectorLayoutManager;//选择的布局管理器
     private SelectRecyclerViewAdapter selectAdapter;//选择的适配器
@@ -106,13 +113,16 @@ public class MainActivity extends BaseActivity implements
     private FloatingActionButton fabNoteEdit;//编辑的按钮
 
     private FloatingActionButton fabAttachPicture;//附加图片的按钮
-    private FloatingActionButton fabAttachAudio;//附加录音的按钮
     private FloatingActionButton fabAttachVideo;//附加视频的按钮
     private SearchView searchView;//搜索的视图
     private MenuItem searchMenuItem;//搜索的菜单项
     private ViewPager viewPager;//视图的翻页
     private TabLayout tabLayout;//标签的布局
     private View headerView;//头部的视图
+
+    private VideoDb videoDb;
+
+    VideoRecordHelper videoRecordHelper = new VideoRecordHelper();
     /**
      *设置搜索时某些组件的显示与隐藏
      */
@@ -123,7 +133,6 @@ public class MainActivity extends BaseActivity implements
             headerView.setVisibility(View.GONE);//隐藏头部的视图
             fabNoteEdit.hide();//隐藏编辑的按钮
             fabAttachPicture.hide();//隐藏附加图片的按钮
-            fabAttachAudio.hide();
             fabAttachVideo.hide();
             //设置软键盘的模式
             getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
@@ -139,7 +148,6 @@ public class MainActivity extends BaseActivity implements
             headerView.setVisibility(View.VISIBLE);//显示头部的视图
             fabNoteEdit.show();//显示编辑的按钮
             fabAttachPicture.show();//显示附加图片的按钮
-            fabAttachAudio.show();
             fabAttachVideo.show();
         }
 
@@ -157,7 +165,7 @@ public class MainActivity extends BaseActivity implements
      */
     @Override
     public void onSaveInstanceState(Bundle outState) {
-
+        outState.putString("currentVideoPath", mCurrentVideoPath);
         outState.putString("currentPhotoPath", mCurrentPhotoPath);
         super.onSaveInstanceState(outState);
     }
@@ -175,10 +183,12 @@ public class MainActivity extends BaseActivity implements
          *使用 ViewModelProvider 创建并获取 DetailViewModel 的实例
          *ViewModel 用于存储与 UI 相关的数据，以便在配置更改（如屏幕旋转）时保持数据的一致性。
          */
+        videoDb = new VideoDb(this);
         viewModel = new ViewModelProvider(this).get(DetailViewModel.class);
         if (savedInstanceState != null) {
             // 从保存的实例状态恢复当前图片的路径
             mCurrentPhotoPath = savedInstanceState.getString("currentPhotoPath");
+            mCurrentVideoPath = savedInstanceState.getString("currentVideoPath");
         }
         //获取布局填充器，用于将 XML 布局文件转换为 View 对象。
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -232,24 +242,21 @@ public class MainActivity extends BaseActivity implements
 
         likelihoodSort();
 
+        // 处理Edit按钮
         fabNoteEdit = findViewById(R.id.fab_edit_note);
-        // 处理Edit
         fabNoteEdit.setOnClickListener(v -> {
-
             if(viewModel.currentActivity().getValue() != null) {
                 NoteEditDialog dialog = new NoteEditDialog();
                 dialog.setText(viewModel.mNote.getValue());
                 dialog.show(getSupportFragmentManager(), "NoteEditDialogFragment");
-            }else{
-                Toast.makeText(MainActivity.this, getResources().getString(R.string.no_active_activity_error), Toast.LENGTH_LONG).show();
             }
+            else
+                Toast.makeText(MainActivity.this, getResources().getString(R.string.no_active_activity_error), Toast.LENGTH_LONG).show();
         });
 
         // 处理Picture按钮
         fabAttachPicture = findViewById(R.id.fab_attach_picture);
         fabAttachPicture.setOnClickListener(v -> {
-            //currentActivity指的就是你当前选择记录的活动
-            //原始代码直接判断currentActivity()是否为null，你前面创建了实例怎么可能null...
             if(viewModel.currentActivity().getValue()!= null)
             {
                 Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -263,44 +270,63 @@ public class MainActivity extends BaseActivity implements
                     }
                     catch (IOException ex)
                     {
-                        // 创建文件时发生错误
                         Toast.makeText(MainActivity.this, getResources().getString(R.string.camera_error), Toast.LENGTH_LONG).show();
                     }
                     if (photoFile != null)
                     {
-                        // 仅当文件已成功创建时才继续保存文件,与 ACTION_VIEW 目标一起使用的路径
                         mCurrentPhotoPath = photoFile.getAbsolutePath();
-                        Uri photoURI = FileProvider.getUriForFile(MainActivity.this,
-                                BuildConfig.APPLICATION_ID + ".fileprovider",
+                        Uri photoUri = FileProvider.getUriForFile(MainActivity.this,
+                                "de.rampro.activitydiary.fileprovider",
                                 photoFile);
-                        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
                         takePictureIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
                         startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
                     }
                 }
                 else
-                {
-                    //什么b开发者不写else情况
                     Toast.makeText(MainActivity.this, getResources().getString(R.string.no_available_cameras), Toast.LENGTH_LONG).show();
-                }
             }
             else
-            {
                 Toast.makeText(MainActivity.this, getResources().getString(R.string.no_active_activity_error), Toast.LENGTH_LONG).show();
-            }
         });
 
         fabNoteEdit.show();
         PackageManager pm = getPackageManager();
 
-        if(pm.hasSystemFeature(PackageManager.FEATURE_CAMERA)) {
+        if(pm.hasSystemFeature(PackageManager.FEATURE_CAMERA))
             fabAttachPicture.show();
-        }else{
+        else
             fabAttachPicture.hide();
-        }
 
-        fabAttachAudio = findViewById(R.id.fab_attach_audio);
         fabAttachVideo = findViewById(R.id.fab_attach_video);
+        fabAttachVideo.setOnClickListener(v -> {
+            if(viewModel.currentActivity().getValue()!= null)
+            {
+                Intent takeVideoIntent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+                File videoFile = null;
+                try
+                {
+                    videoFile = createVideoFile();
+                    Log.i(TAG, "create file for video capture " + (videoFile == null ? "" : videoFile.getAbsolutePath()));
+                }
+                catch (IOException ex)
+                {
+                    Toast.makeText(MainActivity.this, getResources().getString(R.string.video_error), Toast.LENGTH_LONG).show();
+                }
+                if (videoFile != null)
+                {
+                    mCurrentVideoPath=videoFile.getAbsolutePath();
+                    Uri videoUri = FileProvider.getUriForFile(MainActivity.this,
+                            "de.rampro.activitydiary.fileprovider",
+                            videoFile);
+                    takeVideoIntent.putExtra(MediaStore.EXTRA_OUTPUT, videoUri);
+                    startActivityForResult(takeVideoIntent, REQUEST_VIDEO_CAPTURE);
+                }
+            }
+            else
+                Toast.makeText(MainActivity.this, getResources().getString(R.string.no_active_activity_error), Toast.LENGTH_LONG).show();
+        });
+
 
         //获取Intent、验证操作并获取搜索查询
         Intent intent = getIntent();
@@ -331,7 +357,7 @@ public class MainActivity extends BaseActivity implements
                 Manifest.permission.WRITE_EXTERNAL_STORAGE);
         if(permissionCheck == PackageManager.PERMISSION_GRANTED)
         {
-            storageDir = GraphicsHelper.imageStorageDirectory();
+            storageDir = ImageRecordHelper.imageStorageDirectory();
         }
         else
         {
@@ -349,48 +375,42 @@ public class MainActivity extends BaseActivity implements
         if(storageDir != null)
         {
             File image = new File(storageDir, imageFileName + ".jpg");
-            image.createNewFile();
-            /**
-             * #80
-             * File image = File.createTempFile(imageFileName,".jpg",storageDir);
-             */
+            //image.createNewFile();
             return image;
         }
         else
             return null;
     }
 
-    private File createAudioFile() throws IOException
-    {
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "Sound_";
-        imageFileName += viewModel.currentActivity().getValue().getName();
-        imageFileName += "_";
-        imageFileName += timeStamp;
-        int permissionCheck = ContextCompat.checkSelfPermission(ActivityDiaryApplication.getAppContext(),
-                Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+    private File createVideoFile() throws IOException {
         File storageDir;
-        if(permissionCheck == PackageManager.PERMISSION_GRANTED)
+        if (ContextCompat.checkSelfPermission(ActivityDiaryApplication.getAppContext(),
+                Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
         {
-            storageDir = GraphicsHelper.audioStorageDirectory();
+            storageDir = videoRecordHelper.videoStorageDirectory();
         }
         else
         {
             if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                     Manifest.permission.WRITE_EXTERNAL_STORAGE))
             {
-                Toast.makeText(this,R.string.perm_write_external_storage_xplain, Toast.LENGTH_LONG).show();
+                Toast.makeText(this, R.string.perm_write_external_storage_xplain, Toast.LENGTH_LONG).show();
             }
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
                     PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE);
             storageDir = null;
         }
-        if(storageDir != null)
+        if (storageDir != null)
         {
-            File audio = new File(storageDir, imageFileName + ".mp3");
-            audio.createNewFile();
-            return audio;
+            String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+            String videoFileName = "Video_";
+            videoFileName += viewModel.currentActivity().getValue().getName();
+            videoFileName += "_";
+            videoFileName += timeStamp;
+            File video = new File(storageDir, videoFileName + ".mp4");
+            return video;
         }
         else
             return null;
@@ -403,7 +423,7 @@ public class MainActivity extends BaseActivity implements
         onActivityChanged(); //刷新当前活动数据
         super.onResume();
         selectAdapter.notifyDataSetChanged(); // redraw全部的RecyclerView
-        ActivityHelper.helper.evaluateAllConditions(); // heavy，合适？
+        ActivityHelper.helper.evaluateAllConditions();
     }
 
     /**
@@ -720,7 +740,7 @@ public class MainActivity extends BaseActivity implements
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             if (mCurrentPhotoPath != null && viewModel.getCurrentDiaryUri() != null) {
                 Uri photoURI = FileProvider.getUriForFile(MainActivity.this,
-                        BuildConfig.APPLICATION_ID + ".fileprovider",
+                        "de.rampro.activitydiary.fileprovider",
                         new File(mCurrentPhotoPath));
                 ContentValues values = new ContentValues();
                 values.put(ActivityDiaryContract.DiaryImage.URI, photoURI.toString());
@@ -737,13 +757,6 @@ public class MainActivity extends BaseActivity implements
                     try {
                         ExifInterface exifInterface = new ExifInterface(mCurrentPhotoPath);
                         if (viewModel.currentActivity().getValue() != null) {
-                            // TODO: #24: when using hierarchical activities tag them all here, separated with comma
-                            /**
-                             * would be great to use IPTC keywords instead of EXIF UserComment, but
-                             * at time of writing (2017-11-24) it is hard to find a library able to write IPTC
-                             * to JPEG for android.
-                             * pixymeta-android or apache/commons-imaging could be interesting for this.
-                             */
                             exifInterface.setAttribute(ExifInterface.TAG_USER_COMMENT, Objects.requireNonNull(viewModel.currentActivity().getValue()).getName());
                             exifInterface.saveAttributes();
                         }
@@ -751,6 +764,20 @@ public class MainActivity extends BaseActivity implements
                         Log.e(TAG, "writing exif data to " + mCurrentPhotoPath + " failed", e);
                     }
                 }
+            }
+        }
+        if (requestCode == REQUEST_VIDEO_CAPTURE && resultCode == RESULT_OK) {
+            Uri videoUri = FileProvider.getUriForFile(MainActivity.this,
+                    "de.rampro.activitydiary.fileprovider",
+                    new File(mCurrentVideoPath));
+            String activityId = Long.toString(viewModel.mDiaryEntryId.getValue());
+            try {
+                videoDb.insertVideo(activityId, videoUri);
+            }
+            catch (Exception e)
+            {
+                Log.e(TAG, "Error in insertVideo: " + e.getMessage());
+                throw e;
             }
         }
     }

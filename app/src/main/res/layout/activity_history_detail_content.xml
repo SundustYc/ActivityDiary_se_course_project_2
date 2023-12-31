@@ -119,26 +119,58 @@
         android:checked="true"
         android:text="@string/adjust_adjacent_times" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/edit_activity_note_til"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:errorEnabled="false">
+        android:layout_height="150dp"
+        android:orientation="horizontal">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edit_activity_note"
+        <LinearLayout
+            android:layout_width="130dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_margin="20dp"
+                app:srcCompat="@drawable/ic_add" />
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="TextView" />
+        </LinearLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/edit_activity_note_til"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/desc_note_hint"
-            android:inputType="textCapSentences|textAutoCorrect|textMultiLine"
-            android:minLines="4"
-            android:singleLine="false" />
+            android:layout_height="match_parent"
+            app:errorEnabled="false">
 
-    </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_activity_note"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="@string/desc_note_hint"
+                android:inputType="textCapSentences|textAutoCorrect|textMultiLine"
+                android:minLines="4"
+                android:singleLine="false" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+    </LinearLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/picture_recycler"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="150dp"
         android:orientation="vertical" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/video_recycler"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

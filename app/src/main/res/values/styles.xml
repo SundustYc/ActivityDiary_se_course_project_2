@@ -24,4 +24,19 @@
         <item name="android:textSize">14sp</item>
         <item name="android:textColor">@color/colorGreyText</item>
     </style>
+    <string name="多云" translatable="false">&#xe786;</string>
+    <string name="暴雪" translatable="false">&#xe788;</string>
+    <string name="风" translatable="false">&#xe78c;</string>
+    <string name="暴雨" translatable="false">&#xe78d;</string>
+    <string name="闪电" translatable="false">&#xe78f;</string>
+    <string name="光亮" translatable="false">&#xe792;</string>
+    <string name="细雨" translatable="false">&#xe794;</string>
+    <string name="晴天" translatable="false">&#xe796;</string>
+    <string name="雷雨" translatable="false">&#xe797;</string>
+    <string name="小雪" translatable="false">&#xe798;</string>
+    <string name="阴天" translatable="false">&#xe799;</string>
+    <string name="中雪" translatable="false">&#xe79a;</string>
+    <string name="阵雨" translatable="false">&#xe79d;</string>
+    <string name="雨天" translatable="false">&#xe79e;</string>
+    <string name="冰雹" translatable="false">&#xe784;</string>
 </resources>
