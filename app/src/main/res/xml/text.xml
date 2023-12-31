@@ -1,8 +1,7 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ ActivityDiary
   ~
-  ~ Copyright (C) 2018-2018 Raphael Mack http://www.raphael-mack.de
+  ~ Copyright (C) 2023 Raphael Mack http://www.raphael-mack.de
   ~
   ~ This program is free software: you can redistribute it and/or modify
   ~ it under the terms of the GNU General Public License as published by
@@ -18,15 +17,6 @@
   ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
   -->
 
-<menu xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
-    <item
-        android:id="@+id/action_filter"
-        android:title="@string/action_filter"
-        app:showAsAction="always"
-        app:actionViewClass="androidx.appcompat.widget.SearchView"
-        android:searchIcon="@drawable/ic_filter"
-        app:searchIcon="@drawable/ic_filter"
-        />
-</menu>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
+</PreferenceScreen>

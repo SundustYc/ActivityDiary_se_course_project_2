@@ -23,6 +23,7 @@ import android.app.DatePickerDialog;
 import android.app.LoaderManager;
 import android.content.Context;
 import android.content.CursorLoader;
+import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.graphics.Color;
@@ -44,6 +45,8 @@ import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.IValueFormatter;
+import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
 import org.osmdroid.config.Configuration;
@@ -60,6 +63,7 @@ import de.rampro.activitydiary.db.ActivityDiaryContract;
 import de.rampro.activitydiary.helpers.DateHelper;
 import de.rampro.activitydiary.helpers.TimeSpanFormatter;
 import de.rampro.activitydiary.ui.generic.BaseActivity;
+import de.rampro.activitydiary.ui.history.HistoryActivity;
 import de.rampro.activitydiary.ui.history.HistoryDetailActivity;
 
 public class StatisticsActivity extends BaseActivity implements LoaderManager.LoaderCallbacks<Cursor>, AdapterView.OnItemSelectedListener {
@@ -128,6 +132,32 @@ public class StatisticsActivity extends BaseActivity implements LoaderManager.Lo
         currentDateTime = new Date().getTime();
 
         mDrawerToggle.setDrawerIndicatorEnabled(false);
+
+        chart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+            @Override
+            public void onValueSelected(Entry e, Highlight h) {
+                // 获取点击的 PieEntry
+                PieEntry pieEntry = (PieEntry) e;
+                // 获取活动的名称
+                String activityName = pieEntry.getLabel();
+
+                // 创建一个 Intent
+                Intent intent = new Intent(StatisticsActivity.this, HistoryActivity.class);
+                // 将活动名称作为额外数据传递到目标 Activity
+                intent.putExtra("ACTIVITY_NAME", activityName);
+                // 启动目标 Activity
+                startActivity(intent);
+            }
+
+            @Override
+            public void onNothingSelected() {
+
+            }
+
+
+        });
+
+
     }
 
     // Called when a new Loader needs to be created

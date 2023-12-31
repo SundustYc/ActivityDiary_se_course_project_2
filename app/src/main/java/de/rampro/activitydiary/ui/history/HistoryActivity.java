@@ -190,10 +190,23 @@ public class HistoryActivity extends BaseActivity implements
 
         // Get the intent, verify the action and get the query
         handleIntent(getIntent());
+
+        Intent intent = getIntent();
+        if (intent != null && intent.hasExtra("ACTIVITY_NAME")) {
+            String activityName = intent.getStringExtra("ACTIVITY_NAME");
+
+            // 在这里将活动名称设置到搜索框中，假设你有一个搜索框的引用叫做 searchView
+            SearchView searchView = findViewById(R.id.searchView);
+            if (searchView != null) {
+                searchView.setQuery(activityName, false);
+            }
+            filterHistoryView(activityName);
+        }
     }
 
     @Override
     protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
         setIntent(intent);
         handleIntent(intent);
     }
