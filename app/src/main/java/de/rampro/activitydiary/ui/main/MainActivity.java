@@ -65,6 +65,7 @@ import de.rampro.activitydiary.ActivityDiaryApplication;
 import de.rampro.activitydiary.BuildConfig;
 import de.rampro.activitydiary.R;
 import de.rampro.activitydiary.db.ActivityDiaryContract;
+import de.rampro.activitydiary.db.WeatherDb;
 import de.rampro.activitydiary.helpers.ActivityHelper;
 import de.rampro.activitydiary.helpers.DateHelper;
 import de.rampro.activitydiary.helpers.GraphicsHelper;
@@ -78,6 +79,7 @@ import de.rampro.activitydiary.ui.generic.EditActivity;
 import de.rampro.activitydiary.ui.history.HistoryDetailActivity;
 import de.rampro.activitydiary.ui.settings.SettingsActivity;
 import de.rampro.activitydiary.db.VideoDb;
+import de.rampro.activitydiary.helpers.WeatherHelper;
 
 public class MainActivity extends BaseActivity implements
         SelectRecyclerViewAdapter.SelectListener,
@@ -121,6 +123,7 @@ public class MainActivity extends BaseActivity implements
     private View headerView;//头部的视图
 
     private VideoDb videoDb;
+    WeatherDb weatherDb;
 
     VideoRecordHelper videoRecordHelper = new VideoRecordHelper();
     /**
@@ -495,7 +498,21 @@ public class MainActivity extends BaseActivity implements
                 }
             });
             undoSnackBar.show();
-        }else{
+            WeatherHelper.getWeatherData(new WeatherHelper.WeatherCallback() {
+                @Override
+                public void onWeatherDataReceived(String weatherData) {
+                    // 将天气信息和活动ID存入数据库
+                    String activityId = Long.toString(viewModel.mDiaryEntryId.getValue());
+                    try {
+                        weatherDb=new WeatherDb(getApplicationContext());
+                        weatherDb.insertWeather(activityId, weatherData);
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                }
+            });
+        }
+        else{
             //单击列表中的当前活动，终止该活动
             ActivityHelper.helper.setCurrentActivity(null);
         }
@@ -901,6 +918,7 @@ public class MainActivity extends BaseActivity implements
                 }
         }
     }
+
 }
 
 /**

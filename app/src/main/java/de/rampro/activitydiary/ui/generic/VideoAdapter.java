@@ -71,9 +71,8 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Uri videoUri = videoUris.get(position);
-
-
         Bitmap thumbnail = getVideoThumbnail(videoUri);
+        holder.videoThumbnail.setScaleType(ImageView.ScaleType.CENTER_CROP);
         if (thumbnail != null) {
             holder.videoThumbnail.setImageBitmap(thumbnail);
         }

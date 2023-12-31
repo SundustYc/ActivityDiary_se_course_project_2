@@ -49,6 +49,7 @@
         android:required="false"/>
 
     <application
+        android:usesCleartextTraffic="true"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -126,5 +127,6 @@
         <service
             android:name=".helpers.RefreshService"
             android:permission="android.permission.BIND_JOB_SERVICE"/>
+
     </application>
 </manifest>

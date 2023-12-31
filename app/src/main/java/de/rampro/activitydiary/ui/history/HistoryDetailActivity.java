@@ -29,6 +29,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.AbstractCursor;
 import android.database.Cursor;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import com.google.android.material.textfield.TextInputLayout;
@@ -53,8 +54,12 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TimePicker;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.Calendar;
 import java.util.List;
@@ -62,6 +67,7 @@ import java.util.List;
 import de.rampro.activitydiary.ActivityDiaryApplication;
 import de.rampro.activitydiary.R;
 import de.rampro.activitydiary.db.ActivityDiaryContract;
+import de.rampro.activitydiary.db.WeatherDb;
 import de.rampro.activitydiary.helpers.ActivityHelper;
 import de.rampro.activitydiary.ui.generic.BaseActivity;
 import de.rampro.activitydiary.ui.generic.DetailRecyclerViewAdapter;
@@ -90,6 +96,8 @@ public class HistoryDetailActivity extends BaseActivity implements LoaderManager
     private final int OVERLAP_CHECK = 5;
 
     private VideoDb videoDb;
+
+    private WeatherDb weatherDb;
 
     private final String[] ENTRY_PROJ = new String[]{
             ActivityDiaryContract.DiaryActivity.TABLE_NAME + "." + ActivityDiaryContract.DiaryActivity.NAME,
@@ -358,6 +366,69 @@ public class HistoryDetailActivity extends BaseActivity implements LoaderManager
             recyclerView.setAdapter(videoAdapter);
         }catch (Exception e){
             e.printStackTrace();
+        }
+        String text;
+        String weather;
+        weatherDb = new WeatherDb(this);
+        try {
+            String weatherString = weatherDb.getWeather(Long.toString(diaryEntryID));
+            JSONObject weatherJson = new JSONObject(weatherString);
+            text= weatherJson.getString("tem2") +"度到"+ weatherJson.getString("tem1")+"度";
+            weather=weatherJson.getString("wea_img");
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+        TextView weatherTextView = findViewById(R.id.weather_text_view);
+        weatherTextView.setText(text);
+        TextView weatherImg = findViewById(R.id.weather_image_view);
+        Typeface font = Typeface.createFromAsset(getAssets(), "iconfont.ttf");
+        switch (weather){
+            //xue、lei、shachen、wu、bingbao、yun、yu、yin、qing
+            case "xue":
+                weatherImg.setText("@string/xue");
+                weatherImg.setTypeface(font);
+                weatherImg.setText(getResources().getString(R.string.xue));
+                break;
+            case "lei":
+                weatherImg.setText("@string/lei");
+                weatherImg.setTypeface(font);
+                weatherImg.setText(getResources().getString(R.string.lei));
+                break;
+            case "shachen":
+                weatherImg.setText("@string/shachen");
+                weatherImg.setTypeface(font);
+                weatherImg.setText(getResources().getString(R.string.shachen));
+                break;
+            case "wu":
+                weatherImg.setText("@string/wu");
+                weatherImg.setTypeface(font);
+                weatherImg.setText(getResources().getString(R.string.wu));
+                break;
+            case "bingbao":
+                weatherImg.setText("@string/bingbao");
+                weatherImg.setTypeface(font);
+                weatherImg.setText(getResources().getString(R.string.bingbao));
+                break;
+            case "yun":
+                weatherImg.setText("@string/yun");
+                weatherImg.setTypeface(font);
+                weatherImg.setText(getResources().getString(R.string.yun));
+                break;
+            case "yu":
+                weatherImg.setText("@string/yu");
+                weatherImg.setTypeface(font);
+                weatherImg.setText(getResources().getString(R.string.yu));
+                break;
+            case "yin":
+                weatherImg.setText("@string/yin");
+                weatherImg.setTypeface(font);
+                weatherImg.setText(getResources().getString(R.string.yin));
+                break;
+            case "qing":
+                weatherImg.setText("@string/qing");
+                weatherImg.setTypeface(font);
+                weatherImg.setText(getResources().getString(R.string.qing));
+                break;
         }
     }
 
