@@ -31,6 +31,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
+import de.rampro.activitydiary.CalendarActivity;
 import de.rampro.activitydiary.R;
 import de.rampro.activitydiary.ui.history.HistoryActivity;
 import de.rampro.activitydiary.ui.location.MapActivity;
@@ -100,6 +101,10 @@ public class BaseActivity extends AppCompatActivity {
                     case R.id.nav_map:
                         Intent intentmap = new Intent(BaseActivity.this, MapActivity.class);
                         startActivity(intentmap);
+                        break;
+                    case R.id.nav_calendar:
+                        Intent intentcalendar = new Intent(BaseActivity.this, CalendarActivity.class);
+                        startActivity(intentcalendar);
                         break;
                     case R.id.nav_statistics:
                         Intent intentstats = new Intent(BaseActivity.this, StatisticsActivity.class);

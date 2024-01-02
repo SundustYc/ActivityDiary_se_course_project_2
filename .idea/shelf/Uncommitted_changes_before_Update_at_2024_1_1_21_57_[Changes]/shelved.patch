@@ -1,0 +1,53 @@
+Index: .idea/modules.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/modules.xml b/.idea/modules.xml
+deleted file mode 100644
+--- a/.idea/modules.xml	(revision 807937281878dbe89bf1467a3c94430c85e24be2)
++++ /dev/null	(revision 807937281878dbe89bf1467a3c94430c85e24be2)
+@@ -1,22 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<project version="4">
+-  <component name="ProjectModuleManager">
+-    <modules>
+-      <module fileurl="file://$PROJECT_DIR$/ActivityDiary.iml" filepath="$PROJECT_DIR$/ActivityDiary.iml" />
+-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/ActivityDiary.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/ActivityDiary.app.iml" />
+-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/ActivityDiary.app.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/ActivityDiary.app.androidTest.iml" />
+-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/ActivityDiary.app.main.iml" filepath="$PROJECT_DIR$/.idea/modules/app/ActivityDiary.app.main.iml" />
+-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/ActivityDiary.app.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/ActivityDiary.app.unitTest.iml" />
+-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/ActivityDiary_se_course_project_2.iml" filepath="$PROJECT_DIR$/.idea/modules/ActivityDiary_se_course_project_2.iml" />
+-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/ActivityDiary_se_course_project_2.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/ActivityDiary_se_course_project_2.app.iml" />
+-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/ActivityDiary_se_course_project_2.app.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/ActivityDiary_se_course_project_2.app.androidTest.iml" />
+-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/ActivityDiary_se_course_project_2.app.main.iml" filepath="$PROJECT_DIR$/.idea/modules/app/ActivityDiary_se_course_project_2.app.main.iml" />
+-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/ActivityDiary_se_course_project_2.app.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/ActivityDiary_se_course_project_2.app.unitTest.iml" />
+-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/AndroidStudioProjects.ActivityDiary.iml" filepath="$PROJECT_DIR$/.idea/modules/AndroidStudioProjects.ActivityDiary.iml" />
+-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/AndroidStudioProjects.ActivityDiary.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/AndroidStudioProjects.ActivityDiary.app.iml" />
+-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/AndroidStudioProjects.ActivityDiary.app.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/AndroidStudioProjects.ActivityDiary.app.androidTest.iml" />
+-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/AndroidStudioProjects.ActivityDiary.app.main.iml" filepath="$PROJECT_DIR$/.idea/modules/app/AndroidStudioProjects.ActivityDiary.app.main.iml" />
+-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/AndroidStudioProjects.ActivityDiary.app.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/AndroidStudioProjects.ActivityDiary.app.unitTest.iml" />
+-    </modules>
+-  </component>
+-</project>
+\ No newline at end of file
+Index: .idea/compiler.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"CompilerConfiguration\">\r\n    <bytecodeTargetLevel target=\"11\">\r\n      <module name=\"ActivityDiary_se_course_project_2.app\" target=\"17\" />\r\n      <module name=\"AndroidStudioProjects.ActivityDiary.app\" target=\"17\" />\r\n    </bytecodeTargetLevel>\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/compiler.xml b/.idea/compiler.xml
+--- a/.idea/compiler.xml	(revision 807937281878dbe89bf1467a3c94430c85e24be2)
++++ b/.idea/compiler.xml	(date 1703265990677)
+@@ -1,8 +1,7 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <project version="4">
+   <component name="CompilerConfiguration">
+-    <bytecodeTargetLevel target="11">
+-      <module name="ActivityDiary_se_course_project_2.app" target="17" />
++    <bytecodeTargetLevel target="17">
+       <module name="AndroidStudioProjects.ActivityDiary.app" target="17" />
+     </bytecodeTargetLevel>
+   </component>

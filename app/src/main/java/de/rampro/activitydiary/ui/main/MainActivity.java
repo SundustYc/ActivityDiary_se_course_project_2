@@ -32,6 +32,13 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 
 import androidx.appcompat.widget.SearchView;
 import androidx.core.app.ActivityCompat;
@@ -340,6 +347,8 @@ public class MainActivity extends BaseActivity implements
 
         // 在这里调用onActivityChanged会重新加载统计数据并重新填充视图模型,违背了视图模型的理念
         onActivityChanged(); // 在最后执行此操作，以确保在完成数据加载之前没有加载器
+
+
 
     }
 
