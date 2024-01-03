@@ -83,10 +83,15 @@ import de.rampro.activitydiary.model.DetailViewModel;
 import de.rampro.activitydiary.model.DiaryActivity;
 import de.rampro.activitydiary.ui.generic.BaseActivity;
 import de.rampro.activitydiary.ui.generic.EditActivity;
+import de.rampro.activitydiary.ui.history.HistoryActivity;
 import de.rampro.activitydiary.ui.history.HistoryDetailActivity;
 import de.rampro.activitydiary.ui.settings.SettingsActivity;
 import de.rampro.activitydiary.db.VideoDb;
 import de.rampro.activitydiary.helpers.WeatherHelper;
+import android.os.Bundle;
+import android.widget.CalendarView;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends BaseActivity implements
         SelectRecyclerViewAdapter.SelectListener,
@@ -347,6 +352,11 @@ public class MainActivity extends BaseActivity implements
 
         // 在这里调用onActivityChanged会重新加载统计数据并重新填充视图模型,违背了视图模型的理念
         onActivityChanged(); // 在最后执行此操作，以确保在完成数据加载之前没有加载器
+
+        Button addEventButton = findViewById(R.id.addEventButton);
+
+        // 设置按钮点击监听器
+
 
 
 

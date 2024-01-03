@@ -43,6 +43,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -210,6 +211,9 @@ public class HistoryActivity extends BaseActivity implements
         setIntent(intent);
         handleIntent(intent);
     }
+
+
+
 
     private void handleIntent(Intent intent) {
         String query = null;

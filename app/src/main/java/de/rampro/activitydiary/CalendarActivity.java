@@ -18,12 +18,17 @@
  */
 
 package de.rampro.activitydiary;
-import android.app.Activity;
+
+import android.content.Intent;
 import android.os.Bundle;
-        import android.widget.CalendarView;
-        import android.widget.Toast;
-        import androidx.annotation.NonNull;
-        import androidx.appcompat.app.AppCompatActivity;
+import android.view.View;
+import android.widget.Button;
+import android.widget.CalendarView;
+import android.widget.Toast;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
+import de.rampro.activitydiary.ui.history.HistoryActivity;
 
 public class CalendarActivity extends AppCompatActivity {
 
@@ -44,5 +49,19 @@ public class CalendarActivity extends AppCompatActivity {
                 Toast.makeText(CalendarActivity.this, "Selected Date: " + selectedDate, Toast.LENGTH_SHORT).show();
             }
         });
+
+        // 获取按钮对象
+        Button addEventButton = findViewById(R.id.addEventButton);
+
+        // 设置按钮点击事件监听器
+        addEventButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // 处理按钮点击事件
+                Intent intent = new Intent(CalendarActivity.this, HistoryActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 }
+
